@@ -1,0 +1,94 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ProDebt - نظام التحصيل الاحترافي</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            borderRadius: {
+              'xl': '12px',
+              '2xl': '16px',
+              '3xl': '24px',
+            },
+            colors: {
+              brand: {
+                primary: '#0f172a',
+                secondary: '#14b8a6',
+                accent: '#6366f1',
+                light: '#f8fafc'
+              }
+            },
+            boxShadow: {
+              'soft': '0 8px 30px rgba(0, 0, 0, 0.04)',
+              'premium': '0 20px 50px rgba(0, 0, 0, 0.08)'
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap');
+      
+      /* إزالة المسافات بين الحروف بشكل قطعي وتطبيق خط القاهرة */
+      * {
+        letter-spacing: 0 !important;
+        word-spacing: normal !important;
+        font-kerning: none !important;
+        font-family: 'Cairo', sans-serif !important;
+      }
+
+      body {
+        background: #f8fafc;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+      }
+
+      .custom-scrollbar::-webkit-scrollbar {
+        width: 5px;
+        height: 5px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: #e2e8f0;
+        border-radius: 20px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: #cbd5e1;
+      }
+      
+      .glass-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(8px);
+        border: 1px solid rgba(226, 232, 240, 0.8);
+      }
+
+      @media (max-width: 640px) {
+        .mobile-padding { padding: 1.25rem; }
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "recharts": "https://esm.sh/recharts@^3.6.0",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+    "react": "https://esm.sh/react@^19.2.3",
+    "react/": "https://esm.sh/react@^19.2.3/",
+    "@google/genai": "https://esm.sh/@google/genai@^1.35.0"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body>
+    <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>
