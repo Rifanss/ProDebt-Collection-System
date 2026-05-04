@@ -1,6 +1,6 @@
 
 import React, { useState, useMemo, useRef, useCallback } from 'react';
-import { Customer, CollectionStatus, formatSaudiMobile } from '../types.ts';
+import { Customer, CollectionStatus, formatSaudiMobile, getWhatsAppLink } from '../types.ts';
 import CustomerDetailModal from './CustomerDetailModal.tsx';
 import CopyButton from './CopyButton.tsx';
 
@@ -156,27 +156,6 @@ const CustomerTable: React.FC<CustomerTableProps> = ({ customers, onUpdateField,
     }
   };
 
-  const getWhatsAppDynamicLink = (c: Customer) => {
-    if (!messageTemplate || !c.mobile) return '#';
-    const customerFirstName = (c.name || '').trim().split(/\s+/)[0];
-    const collectorFirstName = (c.collectorName || '').split(' ')[0];
-    const settlement = c.amount * (1 - (c.discountRate || 0)/100);
-    
-    let msg = messageTemplate
-      .replace(/{customerName}/g, c.name)
-      .replace(/{customerFirstName}/g, customerFirstName)
-      .replace(/{amount}/g, (c.amount || 0).toLocaleString() + " SAR")
-      .replace(/{product}/g, c.product || '')
-      .replace(/{collectorName}/g, c.collectorName || '')
-      .replace(/{collectorFirstName}/g, collectorFirstName)
-      .replace(/{settlementAmount}/g, settlement.toLocaleString() + " SAR")
-      .replace(/{debtAge}/g, c.debtAge || '')
-      .replace(/{freezeDate}/g, c.freezeDate || 'غير محدد');
-      
-    const mobile = formatSaudiMobile(c.mobile);
-    return `https://wa.me/${mobile}?text=${encodeURIComponent(msg)}`;
-  };
-
   const statusOptions = Object.values(CollectionStatus);
   const totalTableWidth = initialColumns.reduce((acc, col) => acc + parseInt(col.width), 0);
 
@@ -216,7 +195,7 @@ const CustomerTable: React.FC<CustomerTableProps> = ({ customers, onUpdateField,
                       </div>
                       <button 
                         onClick={(e) => { e.stopPropagation(); togglePin(col.key as string); }}
-                        className={`w-4 h-4 rounded flex items-center justify-center transition-all active:scale-90 text-[8px] shrink-0 border border-white/10 ${col.isPinned ? 'bg-teal-600 text-white shadow-lg' : 'bg-slate-700 text-slate-400 hover:text-white'}`}
+                        className={`w-4 h-4 rounded-none flex items-center justify-center transition-all active:scale-90 text-[8px] shrink-0 border border-white/10 ${col.isPinned ? 'bg-teal-600 text-white shadow-lg' : 'bg-slate-700 text-slate-400 hover:text-white'}`}
                       >
                         📌
                       </button>
@@ -239,7 +218,7 @@ const CustomerTable: React.FC<CustomerTableProps> = ({ customers, onUpdateField,
                       placeholder={`...`}
                       value={filters[col.key] || ''}
                       onChange={e => handleFilterChange(col.key, e.target.value)}
-                      className="w-full bg-slate-800/60 text-white border border-white/10 rounded px-1.5 py-1 text-[8px] outline-none focus:ring-1 focus:ring-teal-500 placeholder:text-slate-600 text-center transition-all"
+                      className="w-full bg-slate-800/60 text-white border border-white/10 rounded-none px-1.5 py-1 text-[8px] outline-none focus:ring-1 focus:ring-teal-500 placeholder:text-slate-600 text-center transition-all"
                     />
                   </th>
                 ))}
@@ -280,7 +259,7 @@ const CustomerTable: React.FC<CustomerTableProps> = ({ customers, onUpdateField,
                             dir="rtl"
                             onClick={e => e.stopPropagation()}
                             onChange={e => onUpdateField(c.id, 'status', e.target.value)}
-                            className={`w-full h-7 rounded px-0.5 text-[8px] font-black border transition-all outline-none appearance-none text-center cursor-pointer ${getStatusColor(c.status)}`}
+                            className={`w-full h-7 rounded-none px-0.5 text-[8px] font-black border transition-all outline-none appearance-none text-center cursor-pointer ${getStatusColor(c.status)}`}
                           >
                             {statusOptions.map(opt => (
                               <option key={opt} value={opt} className="bg-white text-slate-900 font-bold">{opt}</option>
@@ -293,7 +272,7 @@ const CustomerTable: React.FC<CustomerTableProps> = ({ customers, onUpdateField,
                                <a 
                                  href={`tel:${formatSaudiMobile(c.mobile)}`} 
                                  onClick={e => e.stopPropagation()}
-                                 className="w-5 h-5 bg-teal-50 text-teal-600 rounded-full flex items-center justify-center hover:bg-teal-600 hover:text-white transition-all shadow-sm border border-teal-100"
+                                 className="w-5 h-5 bg-teal-50 text-teal-600 rounded-none flex items-center justify-center hover:bg-teal-600 hover:text-white transition-all shadow-sm border border-teal-100"
                                  title="اتصال الآن"
                                >
                                  📞
@@ -304,7 +283,7 @@ const CustomerTable: React.FC<CustomerTableProps> = ({ customers, onUpdateField,
                           <div className="flex items-center justify-center">
                             {c.mobile ? (
                               <a 
-                                href={getWhatsAppDynamicLink(c)}
+                                href={getWhatsAppLink(c, messageTemplate)}
                                 onClick={e => e.stopPropagation()}
                                 target="_blank"
                                 className="w-6 h-6 bg-emerald-50 text-emerald-600 rounded-lg flex items-center justify-center hover:bg-emerald-600 hover:text-white transition-all border border-emerald-100 shadow-sm"

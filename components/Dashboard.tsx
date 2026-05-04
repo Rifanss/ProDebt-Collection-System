@@ -1,6 +1,6 @@
 
 import React, { useMemo, useState, useEffect, useRef } from 'react';
-import { Customer, User } from '../types.ts';
+import { Customer, User, getWhatsAppLink } from '../types.ts';
 import FilteredCustomersModal from './FilteredCustomersModal.tsx';
 import DiscountCalculator from './DiscountCalculator.tsx';
 import CustomerDetailModal from './CustomerDetailModal.tsx';
@@ -173,45 +173,20 @@ const Dashboard: React.FC<DashboardProps> = ({
   };
 
   const SectionHeader = ({ children }: { children?: React.ReactNode }) => (
-    <div className="flex items-center gap-3 mb-6 pr-2 border-r-4 border-teal-500">
-      <h2 className="section-title text-sm font-black text-slate-600 uppercase">
+    <div className="flex items-center gap-2 mb-4 pr-1.5 border-r-[3px] border-teal-500">
+      <h2 className="section-title text-[11px] font-black text-slate-500 uppercase tracking-wider">
         {children}
       </h2>
       <div className="flex-1 h-[1px] bg-gradient-to-l from-slate-200 to-transparent"></div>
     </div>
   );
 
-  const StrategicCard = ({ title, count, amount, color, onClick, customers }: any) => (
-    <div 
-      onClick={() => onClick(title, customers)}
-      className="bg-white p-5 md:p-6 rounded-[2rem] border border-slate-100 shadow-soft relative overflow-hidden flex items-center justify-between cursor-pointer group hover:shadow-md hover:border-teal-100 transition-all h-40"
-    >
-      <div className={`absolute right-0 top-0 bottom-0 w-2 ${color}`}></div>
-      <div className="flex-1 pr-4 text-right">
-        <h3 className="text-[13px] md:text-sm font-black text-slate-800 mb-3 group-hover:text-teal-600 transition-colors">{title}</h3>
-        <div className="space-y-1">
-          <p className="text-[10px] md:text-[11px] font-bold text-slate-500">
-            عدد الحسابات : <span className="tabular-nums font-black text-slate-800">{count.toLocaleString()}</span> حساب
-          </p>
-          <p className="text-[10px] md:text-[11px] font-bold text-slate-500">
-            إجمالي المبلغ : <span className="tabular-nums font-black text-indigo-600">SAR {amount.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>
-          </p>
-        </div>
-      </div>
-      <div className="shrink-0 flex flex-col items-center gap-1">
-        <div className="relative">
-          <div className="w-14 h-16 bg-slate-50 rounded-2xl flex flex-col items-center justify-center p-2 border border-slate-100 shadow-inner group-hover:bg-teal-50 group-hover:border-teal-200 transition-colors">
-            <span className="text-[7px] font-black text-rose-800 leading-tight uppercase text-center">عرض الملف</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+
 
   return (
-    <div className="space-y-10 pb-16 bg-slate-50/50" dir="rtl">
+    <div className="space-y-6 pb-12 bg-slate-50/50" dir="rtl">
       {/* Slider Section */}
-      <section className="w-full h-[280px] md:h-[420px] relative overflow-hidden shadow-2xl border-b border-slate-200 bg-slate-900">
+      <section className="w-full h-[200px] md:h-[350px] relative overflow-hidden shadow-xl border-b border-slate-200 bg-slate-900">
         {slides.map((slide, index) => (
           <div 
             key={index}
@@ -223,12 +198,12 @@ const Dashboard: React.FC<DashboardProps> = ({
               alt={slide.title} 
               className={`w-full h-full object-cover transform transition-transform duration-[6000ms] ${index === currentSlide ? 'scale-100' : 'scale-110'}`}
             />
-            <div className="absolute inset-0 z-20 flex flex-col items-start justify-center px-8 md:px-24">
+            <div className="absolute inset-0 z-20 flex flex-col items-start justify-center px-6 md:px-20">
               <div className="max-w-4xl text-right">
-                <h1 className="text-3xl md:text-5xl font-black text-white mb-6 drop-shadow-lg animate-in slide-in-from-right-12 duration-700 leading-tight">
+                <h1 className="text-xl md:text-3xl font-black text-white mb-3 drop-shadow-lg animate-in slide-in-from-right-12 duration-700 leading-tight">
                   {slide.title}
                 </h1>
-                <p className="text-sm md:text-xl text-white/95 font-bold drop-shadow-md animate-in slide-in-from-right-16 duration-1000 max-w-2xl leading-relaxed">
+                <p className="text-[10px] md:text-base text-white/95 font-bold drop-shadow-md animate-in slide-in-from-right-16 duration-1000 max-w-xl leading-relaxed">
                   {slide.description}
                 </p>
               </div>
@@ -236,149 +211,61 @@ const Dashboard: React.FC<DashboardProps> = ({
           </div>
         ))}
         {/* Slider Indicators */}
-        <div className="absolute bottom-8 right-8 md:right-24 z-30 flex gap-2">
+        <div className="absolute bottom-4 right-6 md:right-20 z-30 flex gap-1.5">
            {slides.map((_, i) => (
              <button 
                key={i} 
                onClick={() => setCurrentSlide(i)}
-               className={`h-1.5 rounded-full transition-all duration-300 ${i === currentSlide ? 'w-12 bg-teal-500 shadow-[0_0_15px_rgba(20,184,166,0.6)]' : 'w-3 bg-white/30 hover:bg-white/60'}`}
+               className={`h-1 rounded-none transition-all duration-300 ${i === currentSlide ? 'w-10 bg-teal-500 shadow-[0_0_15px_rgba(20,184,166,0.6)]' : 'w-2 bg-white/30 hover:bg-white/60'}`}
              ></button>
            ))}
         </div>
       </section>
 
-      <div className="px-4 md:px-12 space-y-12">
+      <div className="px-3 md:px-10 space-y-8">
         {/* About Section */}
         <section className="animate-in fade-in slide-in-from-bottom-8 duration-700">
-          <div className="flex items-center gap-3 mb-8 pr-2 border-r-4 border-teal-500">
-            <h2 className="text-[10px] font-black text-slate-400 uppercase tracking-widest">نبذة عن الموقع</h2>
-          </div>
-          <div className="max-w-5xl text-right space-y-8">
-            <div className="space-y-2">
-               <h3 className="text-3xl md:text-4xl font-black text-slate-900 leading-none">
+          <div className="max-w-5xl text-right space-y-4">
+            <div className="space-y-1">
+               <h3 className="text-xl md:text-2xl font-black text-slate-900 leading-none">
                  ProDebt Collection System
                </h3>
-               <div className="w-24 h-1.5 bg-teal-500 rounded-full"></div>
+               <div className="w-16 h-1 bg-teal-500 rounded-none"></div>
             </div>
             
-            <div className="space-y-6 text-slate-700 font-bold text-base md:text-lg leading-relaxed">
+            <div className="space-y-3 text-slate-700 font-bold text-xs md:text-sm leading-relaxed">
               <p>
                 يُعد موقع ProDebt Collection System منصة رقمية متخصصة لدعم وإدارة عمليات التحصيل بشكل احترافي وذكي، من خلال توفير أدوات تحليلية متقدمة، ولوحات تحكم تفاعلية، وتقارير فورية تساعد على فهم محفظة الديون واتخاذ قرارات دقيقة مبنية على البيانات.
-              </p>
-              <p>
-                يركّز النظام على رفع كفاءة فرق التحصيل، وتنظيم سير العمل اليومي، وتقليل نسب التعثر، عبر أتمتة المهام، وتحليل أعمار الديون، وتتبع وعود السداد، وتقديم توصيات ذكية داعمة لعملية التحصيل.
               </p>
             </div>
 
             {/* Disclaimer Section */}
-            <div className="mt-12 space-y-4 pt-8 border-t border-slate-100">
-               <h4 className="text-rose-600 font-black text-xs uppercase mb-2">التنويه :</h4>
-               <div className="text-rose-600/80 font-bold text-[11px] md:text-xs leading-relaxed space-y-3">
+            <div className="mt-6 space-y-2 pt-4 border-t border-slate-100">
+               <h4 className="text-rose-600 font-black text-[10px] uppercase mb-1">التنويه :</h4>
+               <div className="text-rose-600/80 font-bold text-[9px] md:text-[10px] leading-relaxed space-y-2 text-justify">
                  <p>
                    نظام ProDebt Collection System والمحتوى المقدم من خلاله، بما في ذلك التحليلات، التقارير، الأدوات الذكية، والمساعد الافتراضي، يُعد اجتهادًا مهنيًا وتقنيًا مبنيًا على الخبرة العملية في مجال تحليل البيانات وإدارة عمليات التحصيل.
                  </p>
                  <p>
                    ولا يُمثل هذا النظام، أو أي من مخرجاته أو محتواه، أي جهة مالية أو مصرفية أو تنظيمية، ولا يُعد إفادة رسمية أو التزامًا نظاميًا أو قرارًا ملزمًا، كما لا يُغني عن الرجوع إلى الأنظمة والتعليمات الصادرة من الجهات المختصة.
                  </p>
-                 <p>
-                   يُستخدم النظام كأداة دعم وتحليل داخلي، بهدف تحسين كفاءة العمل، وتنظيم العمليات، ودعم متخذي القرار بالمعلومات، دون التدخل في الصلاحيات نظامية أو الإجراءات المعتمدة لدى الجهات الرسمية أو المؤسسات المالية.
-                 </p>
-                 <p>
-                   وتخضع جميع البيانات المعروضة داخل النظام لآليات حماية وأمن معلومات، ويتم التعامل معها وفق أعلى معايير السرية، مع التزام المستخدم الكامل بالحفاظ على خصوصية البيانات وعدم إساءة استخدامها.
-                 </p>
                </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Quick Actions */}
-        <section className="animate-in fade-in slide-in-from-bottom-8 duration-700 delay-200">
-          <SectionHeader>إجراءات سريعة</SectionHeader>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="bg-white p-6 rounded-[2rem] border border-slate-200 shadow-soft flex flex-col justify-between group hover:border-green-100 transition-all">
-              <div>
-                <div className="w-12 h-12 bg-green-50 rounded-2xl flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition-transform">📱</div>
-                <h3 className="text-lg font-black text-slate-800 mb-2">تكوين روابط واتساب</h3>
-                <p className="text-xs font-bold text-slate-500 mb-6 leading-relaxed">
-                  سيتم تكوين روابط واتساب لجميع العملاء في المحفظة الحالية بناءً على قالب الرسالة النشط.
-                </p>
-              </div>
-              <button
-                onClick={onGenerateLinks}
-                disabled={isGeneratingLinks || customers.length === 0}
-                className={`w-full py-3.5 px-4 rounded-2xl font-black text-xs uppercase flex items-center justify-center gap-3 transition-all ${
-                  isGeneratingLinks || customers.length === 0
-                    ? 'bg-slate-100 text-slate-400 cursor-not-allowed'
-                    : 'bg-green-600 text-white hover:bg-green-700 shadow-lg shadow-green-200 active:scale-95'
-                }`}
-              >
-                {isGeneratingLinks ? (
-                  <>
-                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                    <span>جاري التكوين...</span>
-                  </>
-                ) : (
-                  <>
-                    <span>تكوين الروابط الآن</span>
-                  </>
-                )}
-              </button>
-            </div>
-
-            <div className="bg-white p-6 rounded-[2rem] border border-slate-200 shadow-soft flex flex-col justify-between group hover:border-indigo-100 transition-all">
-              <div>
-                <div className="w-12 h-12 bg-indigo-50 rounded-2xl flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition-transform">📊</div>
-                <h3 className="text-lg font-black text-slate-800 mb-2">تحديث حالة السداد</h3>
-                <p className="text-xs font-bold text-slate-500 mb-6 leading-relaxed">
-                  انتقل إلى جدول العملاء لتحديث حالات السداد والمتابعة بشكل يدوي أو جماعي.
-                </p>
-              </div>
-              <button
-                onClick={() => setActiveTab('customers')}
-                className="w-full py-3.5 px-4 rounded-2xl font-black text-xs uppercase bg-indigo-600 text-white hover:bg-indigo-700 shadow-lg shadow-indigo-200 flex items-center justify-center gap-3 transition-all active:scale-95"
-              >
-                <span>جدول العملاء</span>
-              </button>
-            </div>
-
-            <div className="bg-white p-6 rounded-[2rem] border border-slate-200 shadow-soft flex flex-col justify-between group hover:border-slate-800 transition-all">
-              <div>
-                <div className="w-12 h-12 bg-slate-100 rounded-2xl flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition-transform">✨</div>
-                <h3 className="text-lg font-black text-slate-800 mb-2">تحليل المحفظة</h3>
-                <p className="text-xs font-bold text-slate-500 mb-6 leading-relaxed">
-                  احصل على رؤى وتوصيات ذكية حول أفضل استراتيجيات التحصيل لمحفظتك الحالية.
-                </p>
-              </div>
-              <button
-                onClick={() => setIsAIPanelOpen(true)}
-                className="w-full py-3.5 px-4 rounded-2xl font-black text-xs uppercase bg-slate-900 text-white hover:bg-slate-800 shadow-lg shadow-slate-200 flex items-center justify-center gap-3 transition-all active:scale-95"
-              >
-                <span>بدء التحليل الذكي</span>
-              </button>
             </div>
           </div>
         </section>
 
         {/* Basic Analytics */}
         <section>
-          <SectionHeader>التحليلات الأساسية للمحفظة</SectionHeader>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-            <div onClick={() => handleOpenModal('إجمالي المحفظة', customers)} className="bg-slate-900 p-5 md:p-6 rounded-3xl text-white shadow-premium cursor-pointer hover:bg-slate-800 transition-all group overflow-hidden relative">
-              <div className="absolute top-0 right-0 w-20 h-20 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-2xl"></div>
-              <p className="text-[8px] font-black opacity-50 uppercase mb-1">إجمالي رصيد المحفظة</p>
-              <p className="text-xl md:text-2xl font-black tabular-nums tracking-tight"><AnimatedCounter value={stats.totalDebt} isCurrency={true} /> <span className="text-[10px] opacity-60">SAR</span></p>
+          <SectionHeader>التحليلات الأساسية للمحفظة الشاملة</SectionHeader>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div onClick={() => handleOpenModal('إجمالي المحفظة', customers)} className="bg-slate-900 p-5 rounded-none text-white shadow-premium cursor-pointer hover:bg-slate-800 transition-all group overflow-hidden relative">
+              <div className="absolute top-0 right-0 w-20 h-20 bg-white/5 rounded-none -translate-y-1/2 translate-x-1/2 blur-2xl"></div>
+              <p className="text-[9px] font-black opacity-50 uppercase mb-1">اجمالي رصيد المحفظة</p>
+              <p className="text-xl md:text-3xl font-black tabular-nums tracking-tight"><AnimatedCounter value={stats.totalDebt} isCurrency={true} /> <span className="text-[11px] opacity-60">SAR</span></p>
             </div>
-            <div onClick={() => handleOpenModal('المحصل الفعلي', customers.filter(c => (c.paymentAmount || 0) > 0))} className="bg-teal-600 p-5 md:p-6 rounded-3xl text-white shadow-premium cursor-pointer hover:bg-teal-700 transition-all relative overflow-hidden">
-              <p className="text-[8px] font-black opacity-60 uppercase mb-1">المحصل الفعلي</p>
-              <p className="text-xl md:text-2xl font-black tabular-nums tracking-tight"><AnimatedCounter value={stats.totalPaid} isCurrency={true} /> <span className="text-[10px] opacity-60">SAR</span></p>
-            </div>
-            <div className="bg-white p-5 md:p-6 rounded-3xl border border-slate-200 shadow-soft">
-              <p className="text-[8px] font-black text-slate-400 uppercase mb-1">كفاءة التحصيل</p>
-              <p className="text-xl md:text-2xl font-black text-teal-600 tabular-nums">{(stats.totalDebt > 0 ? (stats.totalPaid / stats.totalDebt) * 100 : 0).toFixed(1)}%</p>
-            </div>
-            <div onClick={() => handleOpenModal('عدد الحسابات', customers)} className="bg-white p-5 md:p-6 rounded-3xl border border-slate-200 shadow-soft cursor-pointer hover:bg-slate-50 transition-all">
-              <p className="text-[8px] font-black text-slate-400 uppercase mb-1">إجمالي الحسابات</p>
-              <p className="text-xl md:text-2xl font-black text-slate-800 tabular-nums"><AnimatedCounter value={stats.count} /></p>
+            <div onClick={() => handleOpenModal('عدد الحسابات', customers)} className="bg-white p-5 rounded-none border border-slate-200 shadow-soft cursor-pointer hover:bg-slate-50 transition-all">
+              <p className="text-[9px] font-black text-slate-400 uppercase mb-1">اجمالي عدد الحساب</p>
+              <p className="text-xl md:text-3xl font-black text-slate-800 tabular-nums"><AnimatedCounter value={stats.count} /></p>
             </div>
           </div>
         </section>
@@ -386,90 +273,105 @@ const Dashboard: React.FC<DashboardProps> = ({
         {/* Product Distribution Section */}
         <section>
           <SectionHeader>توزيع المحفظة حسب المنتجات</SectionHeader>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             <div 
               onClick={() => handleOpenModal('محفظة التمويل الشخصي (BF)', stats.globalProducts.bf)}
-              className="bg-white p-6 rounded-[2rem] border border-slate-200 shadow-soft hover:shadow-md transition-all cursor-pointer group"
+              className="bg-white p-5 rounded-none border border-slate-200 shadow-soft hover:shadow-md transition-all cursor-pointer group"
             >
-              <div className="flex items-center gap-4 mb-4">
-                <div className="w-12 h-12 bg-indigo-50 rounded-2xl flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">🏦</div>
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-9 h-9 bg-indigo-50 rounded-none flex items-center justify-center text-xl group-hover:scale-110 transition-transform">🏦</div>
                 <div className="text-right">
-                  <h3 className="text-xs font-black text-slate-800 uppercase tracking-tight">التمويل الشخصي</h3>
-                  <p className="text-[10px] font-bold text-slate-400 uppercase">Personal Finance (BF)</p>
+                  <h3 className="text-[10px] font-black text-slate-800 uppercase tracking-tight">التمويل الشخصي PF</h3>
                 </div>
               </div>
-              <div className="space-y-1">
-                <p className="text-[10px] font-bold text-slate-500">عدد الحسابات: <span className="text-slate-800 font-black">{stats.globalProducts.bfCount.toLocaleString()}</span></p>
-                <p className="text-[10px] font-bold text-slate-500">إجمالي المبلغ: <span className="text-indigo-600 font-black">SAR {stats.globalProducts.bfAmount.toLocaleString()}</span></p>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <p className="text-[9px] font-black text-slate-400 uppercase mb-1">عدد الحسابات</p>
+                  <p className="text-xl md:text-3xl font-black text-slate-800 tabular-nums">{stats.globalProducts.bfCount.toLocaleString()}</p>
+                </div>
+                <div>
+                  <p className="text-[9px] font-black text-slate-400 uppercase mb-1">إجمالي المبلغ</p>
+                  <p className="text-xl md:text-3xl font-black text-indigo-600 tabular-nums">{stats.globalProducts.bfAmount.toLocaleString()}</p>
+                </div>
               </div>
             </div>
 
             <div 
               onClick={() => handleOpenModal('محفظة التمويل التأجيري (AL)', stats.globalProducts.al)}
-              className="bg-white p-6 rounded-[2rem] border border-slate-200 shadow-soft hover:shadow-md transition-all cursor-pointer group"
+              className="bg-white p-5 rounded-none border border-slate-200 shadow-soft hover:shadow-md transition-all cursor-pointer group"
             >
-              <div className="flex items-center gap-4 mb-4">
-                <div className="w-12 h-12 bg-teal-50 rounded-2xl flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">🚗</div>
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-9 h-9 bg-teal-50 rounded-none flex items-center justify-center text-xl group-hover:scale-110 transition-transform">🚗</div>
                 <div className="text-right">
-                  <h3 className="text-xs font-black text-slate-800 uppercase tracking-tight">التمويل التأجيري</h3>
-                  <p className="text-[10px] font-bold text-slate-400 uppercase">Auto Lease (AL)</p>
+                  <h3 className="text-[10px] font-black text-slate-800 uppercase tracking-tight">التمويل التأجيري AL</h3>
                 </div>
               </div>
-              <div className="space-y-1">
-                <p className="text-[10px] font-bold text-slate-500">عدد الحسابات: <span className="text-slate-800 font-black">{stats.globalProducts.alCount.toLocaleString()}</span></p>
-                <p className="text-[10px] font-bold text-slate-500">إجمالي المبلغ: <span className="text-teal-600 font-black">SAR {stats.globalProducts.alAmount.toLocaleString()}</span></p>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <p className="text-[9px] font-black text-slate-400 uppercase mb-1">عدد الحسابات</p>
+                  <p className="text-xl md:text-3xl font-black text-slate-800 tabular-nums">{stats.globalProducts.alCount.toLocaleString()}</p>
+                </div>
+                <div>
+                  <p className="text-[9px] font-black text-slate-400 uppercase mb-1">إجمالي المبلغ</p>
+                  <p className="text-xl md:text-3xl font-black text-teal-600 tabular-nums">{stats.globalProducts.alAmount.toLocaleString()}</p>
+                </div>
               </div>
             </div>
 
             <div 
               onClick={() => handleOpenModal('محفظة البطاقات الإئتمانية (CC)', stats.globalProducts.cc)}
-              className="bg-white p-6 rounded-[2rem] border border-slate-200 shadow-soft hover:shadow-md transition-all cursor-pointer group"
+              className="bg-white p-5 rounded-none border border-slate-200 shadow-soft hover:shadow-md transition-all cursor-pointer group"
             >
-              <div className="flex items-center gap-4 mb-4">
-                <div className="w-12 h-12 bg-amber-50 rounded-2xl flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">💳</div>
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-9 h-9 bg-amber-50 rounded-none flex items-center justify-center text-xl group-hover:scale-110 transition-transform">💳</div>
                 <div className="text-right">
-                  <h3 className="text-xs font-black text-slate-800 uppercase tracking-tight">البطاقات الإئتمانية</h3>
-                  <p className="text-[10px] font-bold text-slate-400 uppercase">Credit Cards (CC)</p>
+                  <h3 className="text-[10px] font-black text-slate-800 uppercase tracking-tight">البطاقات الإئتمانية CC</h3>
                 </div>
               </div>
-              <div className="space-y-1">
-                <p className="text-[10px] font-bold text-slate-500">عدد الحسابات: <span className="text-slate-800 font-black">{stats.globalProducts.ccCount.toLocaleString()}</span></p>
-                <p className="text-[10px] font-bold text-slate-500">إجمالي المبلغ: <span className="text-amber-600 font-black">SAR {stats.globalProducts.ccAmount.toLocaleString()}</span></p>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <p className="text-[9px] font-black text-slate-400 uppercase mb-1">عدد الحسابات</p>
+                  <p className="text-xl md:text-3xl font-black text-slate-800 tabular-nums">{stats.globalProducts.ccCount.toLocaleString()}</p>
+                </div>
+                <div>
+                  <p className="text-[9px] font-black text-slate-400 uppercase mb-1">إجمالي المبلغ</p>
+                  <p className="text-xl md:text-3xl font-black text-amber-600 tabular-nums">{stats.globalProducts.ccAmount.toLocaleString()}</p>
+                </div>
               </div>
             </div>
           </div>
         </section>
 
         {/* Calculator & Search Group */}
-        <section className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
-          <div className="space-y-6">
+        <section className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+          <div className="space-y-4">
             <SectionHeader>حاسبة الخصم الذكية</SectionHeader>
             <DiscountCalculator customers={customers} />
           </div>
 
-          <div className="space-y-6">
+          <div className="space-y-4">
             <SectionHeader>البحث السريع المتقدم</SectionHeader>
-            <div className="bg-white p-8 rounded-[2rem] border border-slate-200 shadow-soft space-y-6">
-              <div className="flex flex-col md:flex-row gap-4">
-                <div className="flex-1 space-y-2">
-                  <label className="text-[10px] font-black text-slate-400 uppercase pr-1">البحث عن طريق</label>
+            <div className="bg-white p-4 rounded-none border border-slate-200 shadow-soft space-y-4">
+              <div className="flex flex-col md:flex-row gap-3">
+                <div className="flex-1 space-y-1">
+                  <label className="text-[8px] font-black text-slate-400 uppercase pr-1">البحث عن طريق</label>
                   <select 
                     value={searchType}
                     onChange={(e) => setSearchType(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 px-4 text-xs font-black outline-none focus:ring-2 focus:ring-teal-500/10 focus:bg-white transition-all appearance-none cursor-pointer"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-none py-1.5 px-2 text-[10px] font-black outline-none focus:ring-2 focus:ring-teal-500/10 focus:bg-white transition-all appearance-none cursor-pointer"
                   >
                     <option value="">اختر نوع البحث...</option>
-                    <option value="accountNumber">🏦 رقم حساب التمويل</option>
-                    <option value="idNumber">💳 رقم الهوية الوطنية</option>
-                    <option value="mobile">📱 رقم الجوال المسجل</option>
+                    <option value="accountNumber">🏦 رقم الحساب</option>
+                    <option value="idNumber">💳 رقم الهوية</option>
+                    <option value="mobile">📱 رقم الجوال</option>
                   </select>
                 </div>
-                <div className="flex-1 space-y-2">
-                  <label className="text-[10px] font-black text-slate-400 uppercase pr-1">إدخال البيانات</label>
+                <div className="flex-1 space-y-1">
+                  <label className="text-[8px] font-black text-slate-400 uppercase pr-1">إدخال البيانات</label>
                   <input 
                     type="text" 
                     inputMode="numeric"
-                    placeholder="أدخل الأرقام هنا..."
+                    placeholder="أدخل الأرقام..."
                     value={searchValue}
                     onChange={(e) => {
                       const val = e.target.value;
@@ -477,35 +379,49 @@ const Dashboard: React.FC<DashboardProps> = ({
                         setSearchValue(val);
                       }
                     }}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 px-4 text-xs font-black outline-none focus:ring-2 focus:ring-teal-500/10 focus:bg-white transition-all text-center tabular-nums"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-none py-1.5 px-2 text-[10px] font-black outline-none focus:ring-2 focus:ring-teal-500/10 focus:bg-white transition-all text-center tabular-nums"
                   />
                 </div>
               </div>
 
               {quickSearchResult ? (
-                <div className="p-5 bg-teal-50 border border-teal-100 rounded-2xl flex items-center justify-between animate-in fade-in slide-in-from-top-4 duration-300">
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center text-xl shadow-sm border border-teal-100">👤</div>
+                <div className="p-3 bg-teal-50 border border-teal-100 rounded-none flex items-center justify-between animate-in fade-in slide-in-from-top-4 duration-300">
+                  <div className="flex items-center gap-2">
+                    <div className="w-8 h-8 bg-white rounded-none flex items-center justify-center text-sm shadow-sm border border-teal-100">👤</div>
                     <div className="text-right">
-                      <p className="text-xs font-black text-slate-800">{quickSearchResult.name}</p>
-                      <p className="text-[9px] font-bold text-teal-600 mt-1 uppercase">حساب: {quickSearchResult.accountNumber}</p>
+                      <p className="text-[10px] font-black text-slate-800 truncate max-w-[120px]">{quickSearchResult.name}</p>
+                      <div className="flex items-center gap-2 mt-0.5">
+                        <p className="text-[7px] font-bold text-teal-600 uppercase">حساب: {quickSearchResult.accountNumber}</p>
+                        {quickSearchResult.mobile && (
+                          <a 
+                            href={getWhatsAppLink(quickSearchResult, messageTemplate)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={e => e.stopPropagation()}
+                            className="bg-emerald-100 text-emerald-700 px-1 py-0.5 rounded-none text-[6px] font-black flex items-center gap-0.5 border border-emerald-200 hover:bg-emerald-600 hover:text-white transition-all"
+                          >
+                            <span>واتساب</span>
+                            <span>💬</span>
+                          </a>
+                        )}
+                      </div>
                     </div>
                   </div>
                   <button 
                     onClick={() => setSelectedQuickCustomer(quickSearchResult)}
-                    className="px-6 py-2.5 bg-slate-900 text-white rounded-xl text-[10px] font-black uppercase hover:bg-teal-600 transition-all shadow-md active:scale-95"
+                    className="px-3 py-1.5 bg-slate-900 text-white rounded-none text-[8px] font-black uppercase hover:bg-teal-600 transition-all shadow-md"
                   >
-                    فتح ملف العميل
+                    فتح الملف
                   </button>
                 </div>
               ) : searchValue.length >= 3 ? (
-                <div className="p-5 bg-slate-50 border border-slate-100 rounded-2xl text-center">
-                  <p className="text-[10px] font-black text-slate-400 uppercase italic">لا توجد نتائج مطابقة لبحثك الحالي...</p>
+                <div className="p-3 bg-slate-50 border border-slate-100 rounded-none text-center">
+                  <p className="text-[8px] font-black text-slate-400 uppercase italic">لا توجد نتائج مطابقة...</p>
                 </div>
               ) : (
-                <div className="p-10 border-2 border-dashed border-slate-100 rounded-2xl flex flex-col items-center justify-center text-slate-300">
-                  <span className="text-3xl mb-2 opacity-20">🔍</span>
-                  <p className="text-[9px] font-black uppercase tracking-widest">بانتظار إدخال بيانات البحث</p>
+                <div className="py-4 border-2 border-dashed border-slate-100 rounded-none flex flex-col items-center justify-center text-slate-300">
+                  <span className="text-lg opacity-20">🔍</span>
+                  <p className="text-[7px] font-black uppercase tracking-widest leading-none mt-1">بانتظار البيانات</p>
                 </div>
               )}
             </div>
@@ -515,85 +431,164 @@ const Dashboard: React.FC<DashboardProps> = ({
         {/* Strategic Portfolios */}
         <section>
           <SectionHeader>تصنيفات المحفظة الاستراتيجية</SectionHeader>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-6xl">
-            <StrategicCard 
-              title="محفظة العملاء المتوفين" 
-              count={stats.deceased.totalCount} 
-              amount={stats.deceased.totalAmount} 
-              color="bg-slate-800"
-              onClick={handleOpenModal}
-              customers={stats.deceased.bf.concat(stats.deceased.al).concat(stats.deceased.cc)}
-            />
-            <StrategicCard 
-              title="محفظة عملاء الرواتب" 
-              count={stats.salary.totalCount} 
-              amount={stats.salary.totalAmount} 
-              color="bg-indigo-600"
-              onClick={handleOpenModal}
-              customers={stats.salary.bf.concat(stats.salary.al).concat(stats.salary.cc)}
-            />
-            <StrategicCard 
-              title="عملاء حديثي التعثر (0-1)" 
-              count={stats.recent01.totalCount} 
-              amount={stats.recent01.totalAmount} 
-              color="bg-teal-500"
-              onClick={handleOpenModal}
-              customers={stats.recent01.bf.concat(stats.recent01.al).concat(stats.recent01.cc)}
-            />
-            <StrategicCard 
-              title="عملاء حديثي التعثر (1-2)" 
-              count={stats.recent12.totalCount} 
-              amount={stats.recent12.totalAmount} 
-              color="bg-amber-500"
-              onClick={handleOpenModal}
-              customers={stats.recent12.bf.concat(stats.recent12.al).concat(stats.recent12.cc)}
-            />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
+            <div 
+              onClick={() => handleOpenModal('محفظة العملاء المتوفين', stats.deceased.bf.concat(stats.deceased.al).concat(stats.deceased.cc))}
+              className="bg-white p-5 rounded-none border border-slate-200 shadow-soft hover:shadow-md transition-all cursor-pointer group"
+            >
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-9 h-9 bg-slate-100 rounded-none flex items-center justify-center text-xl group-hover:scale-110 transition-transform">💀</div>
+                <div className="text-right">
+                  <h3 className="text-[10px] font-black text-slate-800 uppercase tracking-tight">محفظة العملاء المتوفين</h3>
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <p className="text-[9px] font-black text-slate-400 uppercase mb-1">عدد الحسابات</p>
+                  <p className="text-xl md:text-3xl font-black text-slate-800 tabular-nums">{stats.deceased.totalCount.toLocaleString()}</p>
+                </div>
+                <div>
+                  <p className="text-[9px] font-black text-slate-400 uppercase mb-1">إجمالي المبلغ</p>
+                  <p className="text-xl md:text-3xl font-black text-slate-900 tabular-nums">{stats.deceased.totalAmount.toLocaleString()}</p>
+                </div>
+              </div>
+            </div>
+
+            <div 
+              onClick={() => handleOpenModal('محفظة عملاء الرواتب', stats.salary.bf.concat(stats.salary.al).concat(stats.salary.cc))}
+              className="bg-white p-5 rounded-none border border-slate-200 shadow-soft hover:shadow-md transition-all cursor-pointer group"
+            >
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-9 h-9 bg-indigo-50 rounded-none flex items-center justify-center text-xl group-hover:scale-110 transition-transform">💰</div>
+                <div className="text-right">
+                  <h3 className="text-[10px] font-black text-slate-800 uppercase tracking-tight">محفظة عملاء الرواتب</h3>
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <p className="text-[9px] font-black text-slate-400 uppercase mb-1">عدد الحسابات</p>
+                  <p className="text-xl md:text-3xl font-black text-slate-800 tabular-nums">{stats.salary.totalCount.toLocaleString()}</p>
+                </div>
+                <div>
+                  <p className="text-[9px] font-black text-slate-400 uppercase mb-1">إجمالي المبلغ</p>
+                  <p className="text-xl md:text-3xl font-black text-indigo-600 tabular-nums">{stats.salary.totalAmount.toLocaleString()}</p>
+                </div>
+              </div>
+            </div>
+
+            <div 
+              onClick={() => handleOpenModal('عملاء حديثي التعثر (0-1)', stats.recent01.bf.concat(stats.recent01.al).concat(stats.recent01.cc))}
+              className="bg-white p-5 rounded-none border border-slate-200 shadow-soft hover:shadow-md transition-all cursor-pointer group"
+            >
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-9 h-9 bg-teal-50 rounded-none flex items-center justify-center text-xl group-hover:scale-110 transition-transform">⏳</div>
+                <div className="text-right">
+                  <h3 className="text-[10px] font-black text-slate-800 uppercase tracking-tight">عملاء حديثي التعثر (0-1)</h3>
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <p className="text-[9px] font-black text-slate-400 uppercase mb-1">عدد الحسابات</p>
+                  <p className="text-xl md:text-3xl font-black text-slate-800 tabular-nums">{stats.recent01.totalCount.toLocaleString()}</p>
+                </div>
+                <div>
+                  <p className="text-[9px] font-black text-slate-400 uppercase mb-1">إجمالي المبلغ</p>
+                  <p className="text-xl md:text-3xl font-black text-teal-600 tabular-nums">{stats.recent01.totalAmount.toLocaleString()}</p>
+                </div>
+              </div>
+            </div>
+
+            <div 
+              onClick={() => handleOpenModal('عملاء حديثي التعثر (1-2)', stats.recent12.bf.concat(stats.recent12.al).concat(stats.recent12.cc))}
+              className="bg-white p-5 rounded-none border border-slate-200 shadow-soft hover:shadow-md transition-all cursor-pointer group"
+            >
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-9 h-9 bg-amber-50 rounded-none flex items-center justify-center text-xl group-hover:scale-110 transition-transform">⚠️</div>
+                <div className="text-right">
+                  <h3 className="text-[10px] font-black text-slate-800 uppercase tracking-tight">عملاء حديثي التعثر (1-2)</h3>
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <p className="text-[9px] font-black text-slate-400 uppercase mb-1">عدد الحسابات</p>
+                  <p className="text-xl md:text-3xl font-black text-slate-800 tabular-nums">{stats.recent12.totalCount.toLocaleString()}</p>
+                </div>
+                <div>
+                  <p className="text-[9px] font-black text-slate-400 uppercase mb-1">إجمالي المبلغ</p>
+                  <p className="text-xl md:text-3xl font-black text-amber-600 tabular-nums">{stats.recent12.totalAmount.toLocaleString()}</p>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 
         {/* Detailed Lists */}
-        <section className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto w-full">
-          <div className="space-y-4">
-            <SectionHeader>أعلى حسابات يتوفر بها أرصدة</SectionHeader>
-            <div className="bg-white rounded-[2rem] border border-slate-200 shadow-soft overflow-hidden h-[300px] flex flex-col w-full">
-              <div className="bg-slate-50/80 p-3 grid grid-cols-3 text-[8px] font-black text-slate-400 text-center uppercase border-b border-slate-100">
-                <div className="text-right">العميل</div><div>رقم الحساب</div><div className="text-left">الرصيد المتوفر</div>
+        <section className="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full">
+          <div className="space-y-3">
+            <SectionHeader>أعلى أرصدة متوفرة</SectionHeader>
+            <div className="bg-white rounded-none border border-slate-200 shadow-soft overflow-hidden h-[250px] flex flex-col w-full">
+              <div className="bg-slate-50/80 p-2 grid grid-cols-3 text-[7px] font-black text-slate-400 text-center uppercase border-b border-slate-100">
+                <div className="text-right">العميل</div><div>رقم الحساب</div><div className="text-left">الرصيد</div>
               </div>
               <div className="flex-1 overflow-y-auto custom-scrollbar divide-y divide-slate-50">
                 {stats.topAvailableBalances.map((c, i) => (
-                  <div key={c.id} onClick={() => handleOpenModal('تفاصيل العميل', [c])} className="p-3.5 grid grid-cols-3 items-center text-[10px] hover:bg-slate-50 cursor-pointer transition-colors group">
+                  <div key={c.id} onClick={() => setSelectedQuickCustomer(c)} className="p-2 grid grid-cols-3 items-center text-[9px] hover:bg-slate-50 cursor-pointer transition-colors group">
                     <div className="text-right font-black text-slate-700 truncate flex items-center gap-1 min-w-0">
-                      <span className="w-4 h-4 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center text-[7px] shrink-0 font-black border border-emerald-100">{i+1}</span>
-                      <span className="truncate group-hover:text-teal-600 transition-colors">{c.name}</span>
+                      <span className="w-3.5 h-3.5 rounded-none bg-emerald-50 text-emerald-600 flex items-center justify-center text-[6px] shrink-0 font-black border border-emerald-100">{i+1}</span>
+                      <span className="truncate group-hover:text-teal-600 transition-colors uppercase">{c.name}</span>
                     </div>
                     <div className="text-center font-bold text-slate-400 tabular-nums flex items-center justify-center gap-1">
                       {c.accountNumber}
                       <CopyButton text={c.accountNumber} />
+                      {c.mobile && (
+                        <a 
+                          href={getWhatsAppLink(c, messageTemplate)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={e => e.stopPropagation()}
+                          className="w-4 h-4 bg-emerald-50 text-emerald-600 flex items-center justify-center rounded-none hover:bg-emerald-600 hover:text-white transition-all border border-emerald-100 shadow-sm"
+                          title="واتساب"
+                        >
+                          <span className="text-[8px]">💬</span>
+                        </a>
+                      )}
                     </div>
-                    <div className="text-left font-black text-emerald-600 tabular-nums">{c.balances.toLocaleString()} <span className="text-[8px] opacity-60 font-bold">SAR</span></div>
+                    <div className="text-left font-black text-emerald-600 tabular-nums">{c.balances.toLocaleString()}</div>
                   </div>
                 ))}
               </div>
             </div>
           </div>
-          <div className="space-y-4">
-            <SectionHeader>اكبر المديونيات القائمة</SectionHeader>
-            <div className="bg-white rounded-[2rem] border border-slate-200 shadow-soft overflow-hidden h-[300px] flex flex-col w-full">
-              <div className="bg-slate-50/80 p-3 grid grid-cols-3 text-[8px] font-black text-slate-400 text-center uppercase border-b border-slate-100">
-                <div className="text-right">العميل</div><div>رقم الحساب</div><div className="text-left">إجمالي المديونية</div>
+          <div className="space-y-3">
+            <SectionHeader>اكبر الديون القائمة</SectionHeader>
+            <div className="bg-white rounded-none border border-slate-200 shadow-soft overflow-hidden h-[250px] flex flex-col w-full">
+              <div className="bg-slate-50/80 p-2 grid grid-cols-3 text-[7px] font-black text-slate-400 text-center uppercase border-b border-slate-100">
+                <div className="text-right">العميل</div><div>رقم الحساب</div><div className="text-left">المديونية</div>
               </div>
               <div className="flex-1 overflow-y-auto custom-scrollbar divide-y divide-slate-50">
                 {stats.highBalance.map((c, i) => (
-                  <div key={c.id} onClick={() => handleOpenModal('تفاصيل العميل', [c])} className="p-3.5 grid grid-cols-3 items-center text-[10px] hover:bg-slate-50 cursor-pointer transition-colors group">
+                  <div key={c.id} onClick={() => setSelectedQuickCustomer(c)} className="p-2 grid grid-cols-3 items-center text-[9px] hover:bg-slate-50 cursor-pointer transition-colors group">
                     <div className="text-right font-black text-slate-700 truncate flex items-center gap-1 min-w-0">
-                      <span className="w-4 h-4 rounded-lg bg-slate-100 text-slate-500 flex items-center justify-center text-[7px] shrink-0 font-black border border-slate-200">{i+1}</span>
-                      <span className="truncate group-hover:text-rose-600 transition-colors">{c.name}</span>
+                      <span className="w-3.5 h-3.5 rounded-none bg-slate-100 text-slate-500 flex items-center justify-center text-[6px] shrink-0 font-black border border-slate-200">{i+1}</span>
+                      <span className="truncate group-hover:text-rose-600 transition-colors uppercase">{c.name}</span>
                     </div>
                     <div className="text-center font-bold text-slate-400 tabular-nums flex items-center justify-center gap-1">
                       {c.accountNumber}
                       <CopyButton text={c.accountNumber} />
+                      {c.mobile && (
+                        <a 
+                          href={getWhatsAppLink(c, messageTemplate)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={e => e.stopPropagation()}
+                          className="w-4 h-4 bg-emerald-50 text-emerald-600 flex items-center justify-center rounded-none hover:bg-emerald-600 hover:text-white transition-all border border-emerald-100 shadow-sm"
+                          title="واتساب"
+                        >
+                          <span className="text-[8px]">💬</span>
+                        </a>
+                      )}
                     </div>
-                    <div className="text-left font-black text-rose-600 tabular-nums">{c.amount.toLocaleString()} <span className="text-[8px] opacity-60 font-bold">SAR</span></div>
+                    <div className="text-left font-black text-rose-600 tabular-nums">{c.amount.toLocaleString()}</div>
                   </div>
                 ))}
               </div>
@@ -602,35 +597,47 @@ const Dashboard: React.FC<DashboardProps> = ({
         </section>
 
         {/* Sabil Orders Section */}
-        <section className="space-y-4">
-          <SectionHeader>عملاء لديهم طلبات سابقة في سيبل</SectionHeader>
-          <div className="bg-white rounded-[2.5rem] border border-slate-200 shadow-soft overflow-hidden h-[400px] flex flex-col w-full">
-            <div className="bg-slate-50/80 p-4 grid grid-cols-3 text-[9px] font-black text-slate-400 text-center uppercase border-b border-slate-100">
+        <section className="space-y-3">
+          <SectionHeader>طلبات سيبل السابقة</SectionHeader>
+          <div className="bg-white rounded-none border border-slate-200 shadow-soft overflow-hidden h-[300px] flex flex-col w-full">
+            <div className="bg-slate-50/80 p-2 grid grid-cols-3 text-[7px] font-black text-slate-400 text-center uppercase border-b border-slate-100">
               <div className="text-right">اسم العميل</div>
               <div>رقم الحساب</div>
-              <div className="text-left">رقم طلب سيبل</div>
+              <div className="text-left">رقم الطلب</div>
             </div>
             <div className="flex-1 overflow-y-auto custom-scrollbar divide-y divide-slate-50">
               {stats.sabilData.length > 0 ? stats.sabilData.map((c, i) => (
-                <div key={c.id} onClick={() => handleOpenModal('تفاصيل العميل', [c])} className="p-4 grid grid-cols-3 items-center text-[11px] hover:bg-indigo-50/30 cursor-pointer transition-colors group">
-                  <div className="text-right font-black text-slate-700 truncate flex items-center gap-2 min-w-0">
-                    <span className="w-5 h-5 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center text-[8px] shrink-0 font-black border border-slate-200">{i+1}</span>
-                    <span className="truncate group-hover:text-indigo-600 transition-colors">{c.name}</span>
+                <div key={c.id} onClick={() => setSelectedQuickCustomer(c)} className="p-2 grid grid-cols-3 items-center text-[9px] hover:bg-indigo-50/30 cursor-pointer transition-colors group">
+                  <div className="text-right font-black text-slate-700 truncate flex items-center gap-1 min-w-0">
+                    <span className="w-4 h-4 rounded-none bg-slate-100 text-slate-500 flex items-center justify-center text-[6px] shrink-0 font-black border border-slate-200">{i+1}</span>
+                    <span className="truncate group-hover:text-indigo-600 transition-colors uppercase">{c.name}</span>
                   </div>
                   <div className="text-center font-bold text-slate-400 tabular-nums flex items-center justify-center gap-1">
                     {c.accountNumber}
                     <CopyButton text={c.accountNumber} />
+                    {c.mobile && (
+                      <a 
+                        href={getWhatsAppLink(c, messageTemplate)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={e => e.stopPropagation()}
+                        className="w-4 h-4 bg-emerald-50 text-emerald-600 flex items-center justify-center rounded-none hover:bg-emerald-600 hover:text-white transition-all border border-emerald-100 shadow-sm"
+                        title="واتساب"
+                      >
+                        <span className="text-[8px]">💬</span>
+                      </a>
+                    )}
                   </div>
                   <div className="text-left">
-                    <span className="px-3 py-1 bg-indigo-100 text-indigo-700 rounded-full text-[9px] font-black tabular-nums border border-indigo-200">
+                    <span className="px-2 py-0.5 bg-indigo-100 text-indigo-700 rounded-none text-[8px] font-black tabular-nums border border-indigo-200">
                       {c.sabilOrderNumber}
                     </span>
                   </div>
                 </div>
               )) : (
                 <div className="h-full flex flex-col items-center justify-center text-slate-300">
-                  <span className="text-5xl mb-4 opacity-10">📑</span>
-                  <p className="text-xs font-black uppercase tracking-widest">لا توجد طلبات سابقة مسجلة في النظام</p>
+                  <span className="text-3xl mb-1 opacity-10">📑</span>
+                  <p className="text-[8px] font-black uppercase tracking-widest">لا توجد طلبات سابقة</p>
                 </div>
               )}
             </div>
@@ -639,16 +646,16 @@ const Dashboard: React.FC<DashboardProps> = ({
 
         {/* AI Assistant Banner */}
         <section>
-          <div onClick={() => setIsAIPanelOpen?.(true)} className="bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-950 p-6 md:p-10 rounded-[2.5rem] shadow-premium flex flex-col md:flex-row items-center justify-between group cursor-pointer hover:scale-[1.01] transition-all relative overflow-hidden">
-            <div className="absolute -top-24 -right-24 w-64 h-64 bg-teal-500/10 rounded-full blur-3xl group-hover:bg-teal-500/20 transition-all"></div>
-            <div className="flex items-center gap-6 relative z-10 text-center md:text-right flex-col md:flex-row">
-              <div className="w-20 h-20 bg-white/5 backdrop-blur-xl rounded-[2rem] flex items-center justify-center text-4xl shadow-2xl border border-white/10 group-hover:rotate-6 transition-transform">🤖</div>
+          <div onClick={() => setIsAIPanelOpen?.(true)} className="bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-950 p-5 md:p-8 rounded-none shadow-premium flex flex-col sm:flex-row items-center justify-between group cursor-pointer hover:scale-[1.01] transition-all relative overflow-hidden">
+            <div className="absolute -top-16 -right-16 w-48 h-48 bg-teal-500/10 rounded-none blur-3xl group-hover:bg-teal-500/20 transition-all"></div>
+            <div className="flex items-center gap-4 relative z-10 text-center md:text-right flex-col md:flex-row">
+              <div className="w-12 h-12 md:w-16 md:h-16 bg-white/5 backdrop-blur-xl rounded-none flex items-center justify-center text-2xl md:text-3xl shadow-2xl border border-white/10 group-hover:rotate-6 transition-transform">🤖</div>
               <div>
-                <h3 className="text-xl md:text-2xl font-black text-white leading-none mb-2">تحدث مع "ذكي" - مساعدك التحصيلي</h3>
-                <p className="text-teal-300 text-[10px] md:text-xs font-bold uppercase opacity-80">حلل محفظتك بذكاء، احصل على توصيات فورية الآن 🎤</p>
+                <h3 className="text-base md:text-xl font-black text-white leading-none mb-1">تحدث مع "ذكي"</h3>
+                <p className="text-teal-300 text-[9px] md:text-[10px] font-bold uppercase opacity-80 italic leading-none">حلل محفظتك بذكاء الآن 🎤</p>
               </div>
             </div>
-            <div className="mt-8 md:mt-0 px-8 py-3.5 bg-white text-slate-900 rounded-2xl font-black text-[11px] uppercase shadow-xl group-hover:bg-teal-50 transition-all z-10">ابدأ المحادثة</div>
+            <div className="mt-4 sm:mt-0 px-6 py-2.5 bg-white text-slate-900 rounded-none font-black text-[9px] uppercase shadow-xl group-hover:bg-teal-50 transition-all z-10">ابدأ المحادثة</div>
           </div>
         </section>
       </div>

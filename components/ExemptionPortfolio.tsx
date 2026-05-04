@@ -171,7 +171,7 @@ const ExemptionPortfolio: React.FC<ExemptionPortfolioProps> = ({ currentUser }) 
     if (s.includes('اعتذار')) style = "bg-slate-800 text-white border-slate-900";
     
     return (
-      <span className={`px-3 py-1 rounded-full text-[9px] font-black border uppercase tracking-tighter ${style}`}>
+      <span className={`px-3 py-1 rounded-none text-[9px] font-black border uppercase tracking-tighter ${style}`}>
         {s}
       </span>
     );
@@ -180,7 +180,7 @@ const ExemptionPortfolio: React.FC<ExemptionPortfolioProps> = ({ currentUser }) 
   if (isLoading) {
     return (
       <div className="h-full flex flex-col items-center justify-center bg-slate-50 gap-4">
-        <div className="w-12 h-12 border-4 border-teal-500/10 border-t-teal-500 rounded-full animate-spin"></div>
+        <div className="w-12 h-12 border-4 border-teal-500/10 border-t-teal-500 rounded-none animate-spin"></div>
         <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Loading Exemption Database Matrix...</p>
       </div>
     );
@@ -191,11 +191,11 @@ const ExemptionPortfolio: React.FC<ExemptionPortfolioProps> = ({ currentUser }) 
       {/* Exemption Header */}
       <div className="bg-white border-b border-slate-200 px-8 py-6 flex flex-col md:flex-row items-center justify-between gap-6 shadow-sm z-20 shrink-0">
         <div className="flex items-center gap-5">
-          <div className="w-14 h-14 bg-slate-950 text-white rounded-2xl flex items-center justify-center text-3xl shadow-xl border border-white/5 group hover:rotate-6 transition-transform">🛡️</div>
+          <div className="w-14 h-14 bg-slate-950 text-white rounded-none flex items-center justify-center text-3xl shadow-xl border border-white/5 group hover:rotate-6 transition-transform">🛡️</div>
           <div className="text-right">
             <h1 className="text-xl font-black text-slate-900 leading-tight">محفظة طلبات الاعفاء الشامله</h1>
             <p className="text-[10px] font-bold text-slate-400 uppercase tracking-tighter mt-1 flex items-center gap-2">
-              <span className="w-2 h-2 bg-teal-500 rounded-full animate-pulse"></span>
+              <span className="w-2 h-2 bg-teal-500 rounded-none animate-pulse"></span>
               Independent Big Data Matrix v3.0
             </p>
           </div>
@@ -208,7 +208,7 @@ const ExemptionPortfolio: React.FC<ExemptionPortfolioProps> = ({ currentUser }) 
               placeholder="بحث في الطلبات (اسم، رقم طلب، هوية)..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full md:w-72 bg-slate-100 border-none rounded-xl py-3 px-10 text-xs font-black outline-none focus:ring-2 focus:ring-teal-500/20 focus:bg-white transition-all text-right"
+              className="w-full md:w-72 bg-slate-100 border-none rounded-none py-3 px-10 text-xs font-black outline-none focus:ring-2 focus:ring-teal-500/20 focus:bg-white transition-all text-right"
             />
             <span className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400">🔍</span>
           </div>
@@ -216,11 +216,11 @@ const ExemptionPortfolio: React.FC<ExemptionPortfolioProps> = ({ currentUser }) 
           <button 
             onClick={() => fileInputRef.current?.click()}
             disabled={isImporting}
-            className="flex-1 md:flex-none px-6 py-4 bg-slate-950 text-white rounded-xl font-black text-[10px] uppercase shadow-2xl hover:bg-teal-600 active:scale-95 transition-all flex items-center justify-center gap-3 border border-white/10 group overflow-hidden relative"
+            className="flex-1 md:flex-none px-6 py-4 bg-slate-950 text-white rounded-none font-black text-[10px] uppercase shadow-2xl hover:bg-teal-600 active:scale-95 transition-all flex items-center justify-center gap-3 border border-white/10 group overflow-hidden relative"
           >
             {isImporting ? (
               <div className="flex items-center gap-2">
-                <span className="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin"></span>
+                <span className="w-4 h-4 border-2 border-white/20 border-t-white rounded-none animate-spin"></span>
                 <span>جاري معالجة البيانات الضخمة...</span>
               </div>
             ) : (
@@ -237,7 +237,7 @@ const ExemptionPortfolio: React.FC<ExemptionPortfolioProps> = ({ currentUser }) 
 
       {/* Main Table Content */}
       <div className="flex-1 overflow-hidden p-6 md:p-8 flex flex-col">
-        <div className="bg-white rounded-[2.5rem] shadow-premium border border-slate-200 overflow-hidden flex flex-col flex-1">
+        <div className="bg-white rounded-none shadow-premium border border-slate-200 overflow-hidden flex flex-col flex-1">
           <div className="flex-1 overflow-auto custom-scrollbar">
             {requests.length > 0 ? (
               <table className="w-full text-right border-collapse min-w-[1300px]">
@@ -259,7 +259,7 @@ const ExemptionPortfolio: React.FC<ExemptionPortfolioProps> = ({ currentUser }) 
                     <tr key={req.id} className={`hover:bg-teal-50/50 transition-colors ${idx % 2 === 0 ? 'bg-white' : 'bg-slate-50/30'}`}>
                       <td className="px-6 py-4 font-black text-slate-900 tabular-nums">
                         <div className="flex items-center gap-2">
-                           <span className="w-1.5 h-1.5 rounded-full bg-teal-500"></span>
+                           <span className="w-1.5 h-1.5 rounded-none bg-teal-500"></span>
                            {req.sabilOrderNumber}
                         </div>
                       </td>
@@ -276,13 +276,13 @@ const ExemptionPortfolio: React.FC<ExemptionPortfolioProps> = ({ currentUser }) 
                         {req.mobile ? (
                           <div className="flex items-center justify-center gap-2">
                             <span className="tabular-nums font-black text-blue-600">{formatSaudiMobile(req.mobile)}</span>
-                            <a href={`tel:${formatSaudiMobile(req.mobile)}`} className="w-6 h-6 bg-blue-50 text-blue-600 rounded-lg flex items-center justify-center hover:bg-blue-600 hover:text-white transition-all shadow-sm border border-blue-100">📞</a>
+                            <a href={`tel:${formatSaudiMobile(req.mobile)}`} className="w-6 h-6 bg-blue-50 text-blue-600 rounded-none flex items-center justify-center hover:bg-blue-600 hover:text-white transition-all shadow-sm border border-blue-100">📞</a>
                           </div>
                         ) : '-'}
                       </td>
                       <td className="px-6 py-4 text-center">
                         {req.whatsAppLink ? (
-                           <a href={req.whatsAppLink.startsWith('http') ? req.whatsAppLink : `https://wa.me/${formatSaudiMobile(req.mobile)}`} target="_blank" rel="noopener noreferrer" className="w-8 h-8 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center hover:bg-emerald-600 hover:text-white transition-all border border-emerald-100 shadow-sm mx-auto">💬</a>
+                           <a href={req.whatsAppLink.startsWith('http') ? req.whatsAppLink : `https://wa.me/${formatSaudiMobile(req.mobile)}`} target="_blank" rel="noopener noreferrer" className="w-8 h-8 bg-emerald-50 text-emerald-600 rounded-none flex items-center justify-center hover:bg-emerald-600 hover:text-white transition-all border border-emerald-100 shadow-sm mx-auto">💬</a>
                         ) : '-'}
                       </td>
                       <td className="px-6 py-4 text-center font-black text-slate-500 tabular-nums">
@@ -292,7 +292,7 @@ const ExemptionPortfolio: React.FC<ExemptionPortfolioProps> = ({ currentUser }) 
                         </div>
                       </td>
                       <td className="px-6 py-4 max-w-xs">
-                        <div className="truncate text-slate-400 italic hover:whitespace-normal hover:overflow-visible hover:bg-white hover:z-50 hover:relative hover:shadow-xl hover:p-3 hover:rounded-xl transition-all" title={req.description}>
+                        <div className="truncate text-slate-400 italic hover:whitespace-normal hover:overflow-visible hover:bg-white hover:z-50 hover:relative hover:shadow-xl hover:p-3 hover:rounded-none transition-all" title={req.description}>
                           {req.description || '-'}
                         </div>
                       </td>
@@ -303,8 +303,8 @@ const ExemptionPortfolio: React.FC<ExemptionPortfolioProps> = ({ currentUser }) 
             ) : (
               <div className="h-full flex flex-col items-center justify-center text-slate-300 gap-8">
                 <div className="relative">
-                   <div className="w-32 h-32 bg-slate-50 rounded-full flex items-center justify-center text-6xl grayscale opacity-20 border-4 border-dashed border-slate-200">🛡️</div>
-                   <div className="absolute -top-4 -right-4 w-12 h-12 bg-white rounded-2xl shadow-xl flex items-center justify-center text-2xl animate-bounce">📥</div>
+                   <div className="w-32 h-32 bg-slate-50 rounded-none flex items-center justify-center text-6xl grayscale opacity-20 border-4 border-dashed border-slate-200">🛡️</div>
+                   <div className="absolute -top-4 -right-4 w-12 h-12 bg-white rounded-none shadow-xl flex items-center justify-center text-2xl animate-bounce">📥</div>
                 </div>
                 <div className="text-center space-y-3">
                   <h3 className="text-xl font-black text-slate-800">محفظة الاعفاء جاهزة للاستيراد</h3>
@@ -314,7 +314,7 @@ const ExemptionPortfolio: React.FC<ExemptionPortfolioProps> = ({ currentUser }) 
                 </div>
                 <button 
                   onClick={() => fileInputRef.current?.click()}
-                  className="px-10 py-4 bg-slate-900 text-white rounded-2xl font-black text-xs uppercase shadow-xl hover:bg-teal-600 transition-all border border-white/10"
+                  className="px-10 py-4 bg-slate-900 text-white rounded-none font-black text-xs uppercase shadow-xl hover:bg-teal-600 transition-all border border-white/10"
                 >
                   ابدأ الاستيراد الآن
                 </button>

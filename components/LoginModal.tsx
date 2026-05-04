@@ -58,7 +58,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ onLoginSuccess, onClose }) => {
 
   return (
     <div className="fixed inset-0 z-[1000] flex items-center justify-center bg-slate-900/40 backdrop-blur-md p-4 animate-in fade-in duration-300" dir="rtl">
-      <div className="bg-white w-full max-w-md shadow-premium overflow-hidden rounded-[2.5rem] border border-slate-100 flex flex-col">
+      <div className="bg-white w-full max-w-md shadow-premium overflow-hidden rounded-none border border-slate-100 flex flex-col">
         
         <div className="pt-10 pb-6 px-10 flex flex-col items-center text-center">
           <div className="w-full h-44 mb-4 relative flex items-center justify-center bg-white">
@@ -79,7 +79,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ onLoginSuccess, onClose }) => {
 
         <form onSubmit={handleLogin} className="px-10 pb-10 space-y-6">
           {error && (
-            <div className="p-3 bg-rose-50 border border-rose-100 text-rose-600 text-[10px] font-black rounded-xl animate-in shake duration-300 text-center">
+            <div className="p-3 bg-rose-50 border border-rose-100 text-rose-600 text-[10px] font-black rounded-none animate-in shake duration-300 text-center">
               {error}
             </div>
           )}
@@ -101,7 +101,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ onLoginSuccess, onClose }) => {
                    setUsername(val);
                 }
               }}
-              className="w-full bg-slate-50 border border-slate-200 rounded-2xl py-4 px-6 text-sm font-bold text-slate-900 outline-none focus:ring-2 focus:ring-slate-900/5 focus:bg-white transition-all text-center"
+              className="w-full bg-slate-50 border border-slate-200 rounded-none py-4 px-6 text-sm font-bold text-slate-900 outline-none focus:ring-2 focus:ring-slate-900/5 focus:bg-white transition-all text-center"
             />
           </div>
 
@@ -116,7 +116,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ onLoginSuccess, onClose }) => {
               placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full bg-slate-50 border border-slate-200 rounded-2xl py-4 px-6 text-sm font-bold text-slate-900 outline-none focus:ring-2 focus:ring-slate-900/5 focus:bg-white transition-all text-center"
+              className="w-full bg-slate-50 border border-slate-200 rounded-none py-4 px-6 text-sm font-bold text-slate-900 outline-none focus:ring-2 focus:ring-slate-900/5 focus:bg-white transition-all text-center"
             />
           </div>
 
@@ -124,10 +124,10 @@ const LoginModal: React.FC<LoginModalProps> = ({ onLoginSuccess, onClose }) => {
             <button 
               type="submit"
               disabled={loading}
-              className="w-full py-5 bg-slate-950 text-white rounded-2xl font-black text-xs uppercase shadow-xl hover:bg-slate-800 active:scale-[0.98] transition-all flex items-center justify-center gap-3"
+              className="w-full py-5 bg-slate-950 text-white rounded-none font-black text-xs uppercase shadow-xl hover:bg-slate-800 active:scale-[0.98] transition-all flex items-center justify-center gap-3"
             >
               {loading ? (
-                <span className="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin"></span>
+                <span className="w-4 h-4 border-2 border-white/20 border-t-white rounded-none animate-spin"></span>
               ) : (
                 <>
                   <span>دخول إلى النظام</span>
@@ -139,7 +139,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ onLoginSuccess, onClose }) => {
             <button 
               type="button"
               onClick={onClose}
-              className="w-full py-4 bg-slate-100 text-slate-500 rounded-2xl font-black text-xs uppercase hover:bg-slate-200 transition-all"
+              className="w-full py-4 bg-slate-100 text-slate-500 rounded-none font-black text-xs uppercase hover:bg-slate-200 transition-all"
             >
               الرجوع للصفحة الرئيسية
             </button>

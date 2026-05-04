@@ -24,7 +24,7 @@ const CopyButton: React.FC<CopyButtonProps> = ({ text, className = "" }) => {
   return (
     <button
       onClick={handleCopy}
-      className={`inline-flex items-center justify-center w-5 h-5 rounded-md transition-all hover:bg-slate-100 text-slate-300 hover:text-teal-600 active:scale-90 ${className}`}
+      className={`inline-flex items-center justify-center w-5 h-5 rounded-none transition-all hover:bg-slate-100 text-slate-300 hover:text-teal-600 active:scale-90 ${className}`}
       title={copied ? "تم النسخ!" : "نسخ النص"}
     >
       {copied ? (

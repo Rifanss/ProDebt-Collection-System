@@ -111,3 +111,24 @@ export const formatSaudiMobile = (mobile: string | number | undefined): string =
 
   return cleaned;
 };
+
+export const getWhatsAppLink = (c: Customer, template: string): string => {
+  if (!template || !c.mobile) return '#';
+  const customerFirstName = (c.name || '').trim().split(/\s+/)[0];
+  const collectorFirstName = (c.collectorName || '').split(' ')[0];
+  const settlement = (c.amount || 0) * (1 - (c.discountRate || 0)/100);
+  
+  const msg = template
+    .replace(/{customerName}/g, c.name || '')
+    .replace(/{customerFirstName}/g, customerFirstName)
+    .replace(/{amount}/g, (c.amount || 0).toLocaleString() + " SAR")
+    .replace(/{product}/g, c.product || '')
+    .replace(/{collectorName}/g, c.collectorName || '')
+    .replace(/{collectorFirstName}/g, collectorFirstName)
+    .replace(/{settlementAmount}/g, settlement.toLocaleString() + " SAR")
+    .replace(/{debtAge}/g, c.debtAge || '')
+    .replace(/{freezeDate}/g, c.freezeDate || 'غير محدد');
+    
+  const mobile = formatSaudiMobile(c.mobile);
+  return `https://wa.me/${mobile}?text=${encodeURIComponent(msg)}`;
+};

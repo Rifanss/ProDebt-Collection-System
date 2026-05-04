@@ -1,6 +1,6 @@
 
 import React, { useMemo, useState } from 'react';
-import { Customer, CollectionStatus, formatSaudiMobile } from '../types.ts';
+import { Customer, CollectionStatus, formatSaudiMobile, getWhatsAppLink } from '../types.ts';
 import CustomerDetailModal from './CustomerDetailModal.tsx';
 import CopyButton from './CopyButton.tsx';
 
@@ -165,15 +165,15 @@ const FilteredCustomersModal: React.FC<FilteredCustomersModalProps> = ({ isOpen,
 
   return (
     <div className="fixed inset-0 z-[600] flex items-center justify-center bg-slate-950/50 backdrop-blur-md p-0 md:p-4 animate-in fade-in duration-300">
-      <div className={`flex flex-col overflow-hidden bg-white shadow-premium transition-all duration-500 ${viewMode === 'summary' ? 'w-full md:max-w-4xl md:rounded-[2.5rem] h-full md:h-auto' : 'w-full h-full'}`}>
+      <div className={`flex flex-col overflow-hidden bg-white shadow-premium transition-all duration-500 ${viewMode === 'summary' ? 'w-full md:max-w-4xl md:rounded-none h-full md:h-auto' : 'w-full h-full'}`}>
         
         {/* Header */}
         <div className="bg-slate-900 p-3 md:p-2 flex justify-between items-center shrink-0 border-b border-white/5" dir="rtl">
           <div className="flex items-center gap-3 pr-2">
-             <div className="w-2 h-2 rounded-full bg-teal-500 animate-pulse"></div>
+             <div className="w-2 h-2 rounded-none bg-teal-500 animate-pulse"></div>
              <h2 className="text-[10px] md:text-[11px] font-black text-white/90 uppercase tracking-widest">{title}</h2>
           </div>
-          <button onClick={onClose} className="w-8 h-8 md:w-6 md:h-6 flex items-center justify-center text-white/60 hover:text-white hover:bg-rose-500 rounded-xl transition-all text-2xl md:text-lg font-light">&times;</button>
+          <button onClick={onClose} className="w-8 h-8 md:w-6 md:h-6 flex items-center justify-center text-white/60 hover:text-white hover:bg-rose-500 rounded-none transition-all text-2xl md:text-lg font-light">&times;</button>
         </div>
 
         {viewMode === 'summary' ? (
@@ -181,8 +181,8 @@ const FilteredCustomersModal: React.FC<FilteredCustomersModalProps> = ({ isOpen,
             {/* Summary Grid */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full max-w-5xl mb-12">
               {productSummary.map((prod) => (
-                <div key={prod.id} className={`${prod.bgColor} rounded-[2rem] p-5 md:p-6 flex flex-row items-center gap-5 shadow-soft border ${prod.borderColor} hover:scale-[1.02] transition-transform`}>
-                  <div className="w-16 h-16 md:w-14 md:h-14 bg-white/60 backdrop-blur-sm rounded-2xl flex items-center justify-center text-3xl md:text-2xl shadow-sm border border-white group-hover:rotate-6 transition-transform shrink-0">
+                <div key={prod.id} className={`${prod.bgColor} rounded-none p-5 md:p-6 flex flex-row items-center gap-5 shadow-soft border ${prod.borderColor} hover:scale-[1.02] transition-transform`}>
+                  <div className="w-16 h-16 md:w-14 md:h-14 bg-white/60 backdrop-blur-sm rounded-none flex items-center justify-center text-3xl md:text-2xl shadow-sm border border-white group-hover:rotate-6 transition-transform shrink-0">
                     {prod.icon}
                   </div>
                   <div className="text-right flex-1 min-w-0">
@@ -204,13 +204,13 @@ const FilteredCustomersModal: React.FC<FilteredCustomersModalProps> = ({ isOpen,
             <div className="flex flex-col md:flex-row gap-4 w-full max-w-md px-6">
               <button 
                 onClick={() => setViewMode('table')}
-                className="w-full md:flex-1 py-3.5 md:py-3 bg-slate-900 text-white rounded-2xl md:rounded-xl font-black text-xs uppercase tracking-[0.2em] shadow-premium hover:bg-teal-600 transition-all border border-white/10"
+                className="w-full md:flex-1 py-3.5 md:py-3 bg-slate-900 text-white rounded-none font-black text-xs uppercase tracking-[0.2em] shadow-premium hover:bg-teal-600 transition-all border border-white/10"
               >
                 المحفظة كاملة
               </button>
               <button 
                 onClick={onClose}
-                className="w-full md:flex-1 py-3.5 md:py-3 bg-slate-50 text-slate-500 rounded-2xl md:rounded-xl font-black text-xs uppercase tracking-[0.2em] shadow-soft hover:bg-slate-100 transition-all border border-slate-200"
+                className="w-full md:flex-1 py-3.5 md:py-3 bg-slate-50 text-slate-500 rounded-none font-black text-xs uppercase tracking-[0.2em] shadow-soft hover:bg-slate-100 transition-all border border-slate-200"
               >
                 إغلاق
               </button>
@@ -221,18 +221,18 @@ const FilteredCustomersModal: React.FC<FilteredCustomersModalProps> = ({ isOpen,
             {/* Search/Tools Bar */}
             <div className="bg-white/80 backdrop-blur-md p-2 border-b border-slate-200 flex flex-wrap justify-between items-center gap-2" dir="rtl">
               <div className="flex items-center gap-2">
-                <button onClick={() => setViewMode('summary')} className="px-4 py-1.5 bg-slate-100 text-slate-600 font-bold text-[9px] rounded-lg hover:bg-slate-200 transition-colors uppercase tracking-widest">إحصائيات المحفظة</button>
+                <button onClick={() => setViewMode('summary')} className="px-4 py-1.5 bg-slate-100 text-slate-600 font-bold text-[9px] rounded-none hover:bg-slate-200 transition-colors uppercase tracking-widest">إحصائيات المحفظة</button>
                 <div className="relative">
                   <input 
                     type="text" 
                     placeholder="بحث في النتائج..." 
                     value={localSearch}
                     onChange={(e) => setLocalSearch(e.target.value)}
-                    className="bg-slate-100 border border-slate-200 rounded-lg px-3 py-1.5 text-[10px] font-bold outline-none w-36 md:w-56 focus:bg-white focus:ring-2 focus:ring-teal-500/10 transition-all"
+                    className="bg-slate-100 border border-slate-200 rounded-none px-3 py-1.5 text-[10px] font-bold outline-none w-36 md:w-56 focus:bg-white focus:ring-2 focus:ring-teal-500/10 transition-all"
                   />
                 </div>
               </div>
-              <div className="px-3 py-1 bg-slate-900/5 text-[9px] font-black text-slate-500 rounded-full border border-slate-900/10">إجمالي السجلات: {filteredAndSortedData.length}</div>
+              <div className="px-3 py-1 bg-slate-900/5 text-[9px] font-black text-slate-500 rounded-none border border-slate-900/10">إجمالي السجلات: {filteredAndSortedData.length}</div>
             </div>
 
             {/* Table View */}
@@ -256,7 +256,7 @@ const FilteredCustomersModal: React.FC<FilteredCustomersModalProps> = ({ isOpen,
                           {col.sticky && (
                             <button 
                               onClick={(e) => { e.stopPropagation(); togglePin(col.key as string); }}
-                              className={`w-4 h-4 rounded-lg flex items-center justify-center transition-all shrink-0 text-[7px] border ${isPinned ? 'bg-teal-600 border-teal-500' : 'bg-slate-700 border-slate-600 opacity-40 hover:opacity-100'}`}
+                              className={`w-4 h-4 rounded-none flex items-center justify-center transition-all shrink-0 text-[7px] border ${isPinned ? 'bg-teal-600 border-teal-500' : 'bg-slate-700 border-slate-600 opacity-40 hover:opacity-100'}`}
                             >
                               📌
                             </button>
@@ -295,7 +295,7 @@ const FilteredCustomersModal: React.FC<FilteredCustomersModalProps> = ({ isOpen,
                               dir="rtl"
                               onClick={e => e.stopPropagation()}
                               onChange={e => onUpdateField?.(c.id, 'status', e.target.value)}
-                              className={`w-full h-6 rounded-lg px-0.5 text-[8px] font-black uppercase border-none outline-none appearance-none text-center cursor-pointer shadow-sm ${getStatusColor(c.status)}`}
+                              className={`w-full h-6 rounded-none px-0.5 text-[8px] font-black uppercase border-none outline-none appearance-none text-center cursor-pointer shadow-sm ${getStatusColor(c.status)}`}
                             >
                               {statusOptions.map(opt => (
                                 <option key={opt} value={opt} className="bg-white text-slate-900 font-bold">{opt}</option>
@@ -308,7 +308,7 @@ const FilteredCustomersModal: React.FC<FilteredCustomersModalProps> = ({ isOpen,
                                 <a 
                                   href={`tel:${formatSaudiMobile(c.mobile)}`} 
                                   onClick={e => e.stopPropagation()}
-                                  className="w-5 h-5 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center hover:bg-blue-600 hover:text-white transition-all shadow-sm border border-blue-100"
+                                  className="w-5 h-5 bg-blue-50 text-blue-600 rounded-none flex items-center justify-center hover:bg-blue-600 hover:text-white transition-all shadow-sm border border-blue-100"
                                   title="اتصال الآن"
                                 >
                                   📞
@@ -319,10 +319,11 @@ const FilteredCustomersModal: React.FC<FilteredCustomersModalProps> = ({ isOpen,
                             <div className="flex items-center justify-center">
                               {c.mobile ? (
                                 <a 
-                                  href={`https://wa.me/${formatSaudiMobile(c.mobile)}${messageTemplate ? `?text=${encodeURIComponent(messageTemplate.replace(/{customerFirstName}/g, c.name.split(' ')[0]).replace(/{collectorFirstName}/g, c.collectorName || '').replace(/{amount}/g, (c.amount || 0).toLocaleString()))}` : ''}`}
+                                  href={getWhatsAppLink(c, messageTemplate || '')}
                                   onClick={e => e.stopPropagation()}
                                   target="_blank"
-                                  className="w-6 h-6 bg-emerald-50 text-emerald-600 rounded-lg flex items-center justify-center hover:bg-emerald-600 hover:text-white transition-all border border-emerald-100 shadow-sm"
+                                  rel="noopener noreferrer"
+                                  className="w-6 h-6 bg-emerald-50 text-emerald-600 rounded-none flex items-center justify-center hover:bg-emerald-600 hover:text-white transition-all border border-emerald-100 shadow-sm"
                                   title="إرسال رسالة"
                                 >
                                   <span className="text-[10px]">💬</span>

@@ -107,47 +107,47 @@ const DiscountCalculator: React.FC<DiscountCalculatorProps> = ({ customers = [],
   };
 
   return (
-    <div className="w-full max-w-xl mx-auto bg-white rounded-[1.5rem] shadow-premium overflow-hidden border border-slate-100 animate-in fade-in zoom-in-95 duration-500" dir="rtl">
-      <div className="bg-slate-900 px-5 py-3 text-white flex justify-between items-center">
+    <div className="w-full max-w-xl mx-auto bg-white rounded-none shadow-premium overflow-hidden border border-slate-100 animate-in fade-in zoom-in-95 duration-500" dir="rtl">
+      <div className="bg-slate-900 px-4 py-2 text-white flex justify-between items-center">
         <div>
-          <h1 className="text-[12px] font-black uppercase tracking-tight">حاسبة الخصم الذكية</h1>
-          <p className="text-[7px] font-bold text-teal-400 uppercase tracking-widest">Official Policy Engine v5.5</p>
+          <h1 className="text-[10px] font-black uppercase tracking-tight">حاسبة الخصم الذكية</h1>
+          <p className="text-[6px] font-bold text-teal-400 uppercase tracking-widest leading-none">Policy Engine v5.5</p>
         </div>
-        <div className="text-xl">🧮</div>
+        <div className="text-lg">🧮</div>
       </div>
 
-      <div className="p-5 space-y-5">
+      <div className="p-4 space-y-4">
         {/* AI Call-to-Action */}
         <button 
           onClick={onAskAI}
-          className="w-full bg-gradient-to-r from-teal-600 to-indigo-600 p-3.5 rounded-2xl flex items-center justify-between group hover:scale-[1.02] transition-all shadow-lg border border-white/10"
+          className="w-full bg-gradient-to-r from-teal-600 to-indigo-600 p-2.5 rounded-none flex items-center justify-between group hover:scale-[1.01] transition-all shadow-lg border border-white/10"
         >
-          <div className="flex items-center gap-3 text-white">
-            <div className="w-8 h-8 bg-white/20 backdrop-blur-md rounded-lg flex items-center justify-center text-lg group-hover:rotate-12 transition-transform">🤖</div>
+          <div className="flex items-center gap-2 text-white">
+            <div className="w-6 h-6 bg-white/20 backdrop-blur-md rounded-none flex items-center justify-center text-base group-hover:rotate-12 transition-transform">🤖</div>
             <div className="text-right">
-               <p className="text-[10px] font-black leading-none mb-1">اسأل ذكي عن مبلغ تسوية العميل</p>
-               <p className="text-[7px] font-bold opacity-60 uppercase tracking-tighter">AI Voice Settlement Request</p>
+               <p className="text-[9px] font-black leading-none mb-0.5">اسأل ذكي عن مبلغ تسوية العميل</p>
+               <p className="text-[6px] font-bold opacity-60 uppercase tracking-tighter">AI Voice Request</p>
             </div>
           </div>
-          <div className="w-6 h-6 bg-white/10 rounded-full flex items-center justify-center text-[10px] text-white">🎤</div>
+          <div className="w-5 h-5 bg-white/10 rounded-none flex items-center justify-center text-[8px] text-white">🎤</div>
         </button>
 
-        <div className="space-y-1.5">
-          <label className="text-[9px] font-black text-slate-400 uppercase px-1 flex items-center gap-1">
-            <span>🏷️</span> البحث التلقائي (حساب / هوية)
+        <div className="space-y-1">
+          <label className="text-[8px] font-black text-slate-400 uppercase px-1 flex items-center gap-1">
+            <span>🏷️</span> البحث التلقائي
           </label>
           <div className="relative">
             <input 
               type="text" 
-              placeholder="أدخل رقم الحساب أو الهوية للجلب الآلي..."
+              placeholder="رقم الحساب أو الهوية..."
               value={accountSearch}
               onChange={(e) => setAccountSearch(e.target.value)}
-              className={`w-full border rounded-xl py-3 px-4 text-[11px] font-black outline-none transition-all text-right tabular-nums ${matchedCustomer ? 'bg-teal-50 border-teal-500 ring-2 ring-teal-500/10' : 'bg-slate-50 border-slate-200 focus:bg-white focus:ring-4 focus:ring-slate-900/5'}`}
+              className={`w-full border rounded-none py-2 px-3 text-[10px] font-black outline-none transition-all text-right tabular-nums ${matchedCustomer ? 'bg-teal-50 border-teal-500 ring-2 ring-teal-500/10' : 'bg-slate-50 border-slate-200 focus:bg-white focus:ring-2 focus:ring-slate-900/10'}`}
             />
             {accountSearch.length >= 5 && (
-              <div className="absolute left-4 top-1/2 -translate-y-1/2">
-                <span className={`text-[8px] font-black uppercase px-2 py-0.5 rounded-full ${matchedCustomer ? 'bg-teal-500 text-white animate-pulse' : 'bg-slate-200 text-slate-400'}`}>
-                  {matchedCustomer ? 'Found ✓' : 'Searching...'}
+              <div className="absolute left-2 top-1/2 -translate-y-1/2">
+                <span className={`text-[7px] font-black uppercase px-2 py-0.5 rounded-none ${matchedCustomer ? 'bg-teal-500 text-white animate-pulse' : 'bg-slate-200 text-slate-400'}`}>
+                  {matchedCustomer ? 'Found' : '...'}
                 </span>
               </div>
             )}
@@ -155,78 +155,76 @@ const DiscountCalculator: React.FC<DiscountCalculatorProps> = ({ customers = [],
         </div>
 
         {accountSearch.length >= 5 && matchedCustomer && (
-          <div className="grid grid-cols-2 gap-3 animate-in slide-in-from-top-2 duration-300">
-            <div className="space-y-1 p-3 bg-slate-50 rounded-xl border border-slate-100">
-              <label className="text-[8px] font-black text-slate-400 uppercase flex items-center gap-1">
+          <div className="grid grid-cols-2 gap-2 animate-in slide-in-from-top-2 duration-300">
+            <div className="space-y-0.5 p-2 bg-slate-50 rounded-none border border-slate-100">
+              <label className="text-[7px] font-black text-slate-400 uppercase flex items-center gap-1">
                 <span>👤</span> اسم العميل
               </label>
-              <div className="flex items-center justify-between gap-1">
-                <p className="text-[11px] font-black text-slate-800 truncate">{matchedCustomer.name}</p>
-                <CopyButton text={matchedCustomer.name} className="w-4 h-4" />
+              <div className="flex items-center justify-between gap-1 overflow-hidden">
+                <p className="text-[9px] font-black text-slate-800 truncate">{matchedCustomer.name}</p>
               </div>
             </div>
-            <div className="space-y-1 p-3 bg-slate-50 rounded-xl border border-slate-100">
-              <label className="text-[8px] font-black text-slate-400 uppercase flex items-center gap-1">
-                <span>💳</span> الرقم الوظيفي
+            <div className="space-y-0.5 p-2 bg-slate-50 rounded-none border border-slate-100">
+              <label className="text-[7px] font-black text-slate-400 uppercase flex items-center gap-1">
+                <span>💳</span> رقم الهوية
               </label>
               <div className="flex items-center justify-between gap-1">
-                <p className="text-[11px] font-black text-slate-800 tabular-nums">{matchedCustomer.idNumber}</p>
-                <CopyButton text={matchedCustomer.idNumber} className="w-4 h-4" />
+                <p className="text-[9px] font-black text-slate-800 tabular-nums">{matchedCustomer.idNumber}</p>
               </div>
             </div>
           </div>
         )}
 
-        <div className="grid grid-cols-2 gap-3">
-          <div className="space-y-1.5">
-            <label className="text-[9px] font-black text-slate-400 uppercase px-1 flex items-center gap-1">
-              <span>🏦</span> نوع المنتج
+        <div className="grid grid-cols-2 gap-2">
+          <div className="space-y-1">
+            <label className="text-[8px] font-black text-slate-400 uppercase px-1 flex items-center gap-1">
+              <span>🏦</span> المنتج
             </label>
             <select 
               value={productType}
               onChange={(e) => setProductType(e.target.value as any)}
-              className="w-full bg-slate-50 border border-slate-200 rounded-xl py-2.5 px-3 text-[10px] font-black outline-none focus:ring-2 focus:ring-teal-500/20 focus:bg-white transition-all appearance-none text-right cursor-pointer"
+              className="w-full bg-slate-50 border border-slate-200 rounded-none py-1.5 px-2 text-[9px] font-black outline-none focus:ring-2 focus:ring-teal-500/10 focus:bg-white transition-all appearance-none text-right cursor-pointer"
             >
-              <option value="BF">تمويل شخصي</option>
-              <option value="AL">تمويل تأجيري</option>
-              <option value="CC">بطاقات ائتمان</option>
+              <option value="BF">شخصي</option>
+              <option value="AL">تأجيري</option>
+              <option value="CC">بطاقات</option>
             </select>
           </div>
-          <div className="space-y-1.5">
-            <label className="text-[9px] font-black text-slate-400 uppercase px-1 flex items-center gap-1">
-              <span>⚖️</span> هل توجد قضية؟
+          <div className="space-y-1">
+            <label className="text-[8px] font-black text-slate-400 uppercase px-1 flex items-center gap-1">
+              <span>⚖️</span> قضية؟
             </label>
             <select 
               value={hasCase}
               onChange={(e) => setHasCase(e.target.value as any)}
-              className="w-full bg-slate-50 border border-slate-200 rounded-xl py-2.5 px-3 text-[10px] font-black outline-none focus:ring-2 focus:ring-teal-500/20 focus:bg-white transition-all appearance-none text-right cursor-pointer"
+              className="w-full bg-slate-50 border border-slate-200 rounded-none py-1.5 px-2 text-[9px] font-black outline-none focus:ring-2 focus:ring-teal-500/10 focus:bg-white transition-all appearance-none text-right cursor-pointer"
             >
-              <option value="No">لا توجد</option>
-              <option value="Yes">نعم، توجد</option>
+              <option value="No">لا</option>
+              <option value="Yes">نعم</option>
             </select>
           </div>
         </div>
 
         {productType === 'AL' && (
-          <div className="space-y-1.5 animate-in slide-in-from-top-1 duration-200">
-            <label className="text-[9px] font-black text-slate-400 uppercase px-1 flex items-center gap-1">
+          <div className="space-y-1 animate-in slide-in-from-top-1 duration-200">
+            <label className="text-[8px] font-black text-slate-400 uppercase px-1 flex items-center gap-1">
               <span>🚗</span> حالة المركبة
             </label>
             <select 
               value={vehicleStatus}
               onChange={(e) => setVehicleStatus(e.target.value as any)}
-              className="w-full bg-teal-50/50 border border-teal-100 rounded-xl py-2.5 px-3 text-[10px] font-black outline-none focus:ring-2 focus:ring-teal-500/20 focus:bg-white transition-all appearance-none text-right cursor-pointer"
+              className="w-full bg-teal-50/50 border border-teal-100 rounded-none py-1.5 px-2 text-[9px] font-black outline-none focus:ring-2 focus:ring-teal-500/10 focus:bg-white transition-all appearance-none text-right cursor-pointer"
             >
-              <option value="WithCustomer">السيارة مع العميل</option>
-              <option value="Repossessed">السيارة مسحوبة (Deficit)</option>
+              <option value="WithCustomer">مع العميل</option>
+              <option value="Repossessed">مسحوبة (Deficit)</option>
             </select>
           </div>
         )}
 
-        <div className="grid grid-cols-2 gap-3">
-          <div className="space-y-1.5">
-            <label className="text-[9px] font-black text-slate-400 uppercase px-1 flex items-center gap-1">
-              <span>💰</span> مبلغ الدين القائم
+        <div className="grid grid-cols-2 gap-2">
+          <div className="space-y-1">
+            <label className="text-[8px] font-black text-slate-400 uppercase px-1 flex items-center gap-1">
+              <span>💰</span> المديونية
             </label>
             <div className="relative">
               <input 
@@ -240,19 +238,19 @@ const DiscountCalculator: React.FC<DiscountCalculatorProps> = ({ customers = [],
                     setOutstandingAmount(val);
                   }
                 }}
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl py-2.5 px-6 text-[10px] font-black text-slate-900 outline-none focus:ring-2 focus:ring-teal-500/20 focus:bg-white transition-all text-center tabular-nums"
+                className="w-full bg-slate-50 border border-slate-200 rounded-none py-1.5 px-6 text-[9px] font-black text-slate-900 outline-none focus:ring-2 focus:ring-teal-500/10 focus:bg-white transition-all text-center tabular-nums"
               />
-              <span className="absolute left-2 top-1/2 -translate-y-1/2 text-[8px] font-black text-slate-300">SAR</span>
+              <span className="absolute left-2 top-1/2 -translate-y-1/2 text-[7px] font-black text-slate-300">SAR</span>
             </div>
           </div>
-          <div className="space-y-1.5">
-            <label className="text-[9px] font-black text-slate-400 uppercase px-1 flex items-center gap-1">
-              <span>⏳</span> عمر الدين
+          <div className="space-y-1">
+            <label className="text-[8px] font-black text-slate-400 uppercase px-1 flex items-center gap-1">
+              <span>⏳</span> العمر
             </label>
             <select 
               value={debtAgeRange}
               onChange={(e) => setDebtAgeRange(e.target.value)}
-              className="w-full bg-slate-50 border border-slate-200 rounded-xl py-2.5 px-3 text-[10px] font-black outline-none focus:ring-2 focus:ring-teal-500/20 focus:bg-white transition-all appearance-none text-right cursor-pointer"
+              className="w-full bg-slate-50 border border-slate-200 rounded-none py-1.5 px-2 text-[9px] font-black outline-none focus:ring-2 focus:ring-teal-500/10 focus:bg-white transition-all appearance-none text-right cursor-pointer"
             >
               {ageOptions.map(opt => (
                 <option key={opt.value} value={opt.value}>{opt.label}</option>
@@ -261,40 +259,40 @@ const DiscountCalculator: React.FC<DiscountCalculatorProps> = ({ customers = [],
           </div>
         </div>
 
-        <div className="bg-slate-50 rounded-2xl p-5 border border-slate-100 relative overflow-hidden space-y-4">
+        <div className="bg-slate-50 rounded-none p-4 border border-slate-100 relative overflow-hidden space-y-3">
           <div className="flex w-full items-center justify-between">
             <div className="text-right">
-              <p className="text-[9px] font-black text-slate-400 uppercase mb-0.5">مبلغ التسوية المعتمد</p>
+              <p className="text-[8px] font-black text-slate-400 uppercase mb-0.5 leading-none">مبلغ التسوية</p>
               <div className="flex items-baseline gap-1">
-                <span className="text-2xl font-black text-teal-600 tabular-nums">{formatCurrency(settlementValue)}</span>
-                <span className="text-[10px] font-bold text-slate-400">SAR</span>
+                <span className="text-xl font-black text-teal-600 tabular-nums">{formatCurrency(settlementValue)}</span>
+                <span className="text-[8px] font-bold text-slate-400">SAR</span>
               </div>
             </div>
             
-            <div className="flex gap-2">
-              <div className="text-center px-3 py-1.5 bg-white rounded-xl border border-teal-100 shadow-sm min-w-[65px]">
-                <p className="text-[8px] font-black text-slate-400 uppercase">الخصم</p>
-                <p className="text-[11px] font-black text-teal-600">%{Math.round(finalDiscountRate * 100)}</p>
+            <div className="flex gap-1.5">
+              <div className="text-center px-2 py-1 bg-white rounded-none border border-teal-100 shadow-sm min-w-[50px]">
+                <p className="text-[7px] font-black text-slate-400 uppercase leading-none">الخصم</p>
+                <p className="text-[10px] font-black text-teal-600">%{Math.round(finalDiscountRate * 100)}</p>
               </div>
-              <div className="text-center px-3 py-1.5 bg-white rounded-xl border border-slate-100 shadow-sm min-w-[65px]">
-                <p className="text-[8px] font-black text-slate-400 uppercase">القيمة</p>
-                <p className="text-[11px] font-black text-slate-800 tabular-nums">{Math.floor(discountValue).toLocaleString()}</p>
+              <div className="text-center px-2 py-1 bg-white rounded-none border border-slate-100 shadow-sm min-w-[50px]">
+                <p className="text-[7px] font-black text-slate-400 uppercase leading-none">القيمة</p>
+                <p className="text-[10px] font-black text-slate-800 tabular-nums">{Math.floor(discountValue).toLocaleString()}</p>
               </div>
             </div>
           </div>
 
           <button 
             disabled={amountValue <= 0}
-            className={`w-full py-3.5 rounded-xl font-black text-[10px] uppercase transition-all flex items-center justify-center gap-3 ${amountValue > 0 ? 'bg-slate-950 text-white hover:bg-teal-600 shadow-xl active:scale-95' : 'bg-slate-200 text-slate-400 cursor-not-allowed'}`}
+            className={`w-full py-2.5 rounded-none font-black text-[9px] uppercase transition-all flex items-center justify-center gap-2 ${amountValue > 0 ? 'bg-slate-950 text-white hover:bg-teal-600 shadow-xl active:scale-95' : 'bg-slate-200 text-slate-400 cursor-not-allowed'}`}
           >
-            <span>إصدار خطاب تسوية رسمي</span>
+            <span>إصدار خطاب تسوية</span>
             <span className="text-xs">📜</span>
           </button>
         </div>
       </div>
       
-      <div className="bg-slate-50 py-3 px-5 border-t border-slate-100 text-center">
-         <p className="text-[7px] font-black text-slate-300 uppercase tracking-[0.3em]">Compliance Check: AI Auditor Online</p>
+      <div className="bg-slate-50 py-2 px-4 border-t border-slate-100 text-center">
+         <p className="text-[6px] font-black text-slate-300 uppercase tracking-[0.2em] leading-none">Compliance: AI Auditor Online</p>
       </div>
     </div>
   );

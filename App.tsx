@@ -11,7 +11,7 @@ import MessageTemplateEditor from './components/MessageTemplateEditor';
 import AIPanel from './components/AIPanel';
 import DiscountCalculator from './components/DiscountCalculator';
 import ExemptionPortfolio from './components/ExemptionPortfolio';
-import { Customer, User, formatSaudiMobile } from './types';
+import { Customer, User, formatSaudiMobile, getWhatsAppLink } from './types';
 
 const DB_NAME = 'SmartCollectorDB_v2';
 const STORE_NAME = 'customers';
@@ -174,26 +174,7 @@ const App: React.FC = () => {
     setIsGeneratingLinks(true);
     
     const updated = customers.map(c => {
-      if (!c.mobile) return c;
-      
-      const customerFirstName = (c.name || '').trim().split(/\s+/)[0];
-      const collectorFirstName = (c.collectorName || '').split(' ')[0];
-      const settlement = c.amount * (1 - (c.discountRate || 0)/100);
-      
-      const msg = messageTemplate
-        .replace(/{customerName}/g, c.name)
-        .replace(/{customerFirstName}/g, customerFirstName)
-        .replace(/{amount}/g, (c.amount || 0).toLocaleString() + " SAR")
-        .replace(/{product}/g, c.product || '')
-        .replace(/{collectorName}/g, c.collectorName || '')
-        .replace(/{collectorFirstName}/g, collectorFirstName)
-        .replace(/{settlementAmount}/g, settlement.toLocaleString() + " SAR")
-        .replace(/{debtAge}/g, c.debtAge || '')
-        .replace(/{freezeDate}/g, c.freezeDate || 'غير محدد');
-        
-      const mobile = formatSaudiMobile(c.mobile);
-      const link = `https://wa.me/${mobile}?text=${encodeURIComponent(msg)}`;
-      
+      const link = getWhatsAppLink(c, messageTemplate);
       return { ...c, whatsAppLink: link };
     });
     
@@ -218,9 +199,9 @@ const App: React.FC = () => {
           <div className="text-center px-6">
             <h2 className="text-xl font-black mb-1 text-slate-800 uppercase">ProDebt Collection System</h2>
             <div className="flex items-center justify-center gap-2">
-              <span className="w-1.5 h-1.5 bg-teal-500 rounded-full animate-bounce"></span>
+              <span className="w-1.5 h-1.5 bg-teal-500 rounded-none animate-bounce"></span>
               <p className="text-slate-400 text-[9px] font-black uppercase">Initializing Neural Link...</p>
-              <span className="w-1.5 h-1.5 bg-teal-500 rounded-full animate-bounce delay-100"></span>
+              <span className="w-1.5 h-1.5 bg-teal-500 rounded-none animate-bounce delay-100"></span>
             </div>
           </div>
         </div>
@@ -254,7 +235,7 @@ const App: React.FC = () => {
         <main className="flex-1 overflow-auto bg-slate-50/50 m-0 rounded-none custom-scrollbar">
           <div className="p-0">
             {filteredData.length === 0 && currentUser && !currentUser.isAdmin && activeTab !== 'exemption' ? (
-              <div className="h-full flex flex-col items-center justify-center text-center p-10 bg-white border border-slate-200 rounded-2xl m-8">
+              <div className="h-full flex flex-col items-center justify-center text-center p-10 bg-white border border-slate-200 rounded-none m-8">
                  <span className="text-6xl mb-6">📂</span>
                  <h3 className="text-xl font-black text-slate-800 mb-2">لا توجد بيانات مرتبطة بهذا الرقم الوظيفي</h3>
                  <p className="text-xs font-bold text-slate-400 uppercase">Employee ID: {currentUser.username}</p>
@@ -293,13 +274,13 @@ const App: React.FC = () => {
                       <div className="h-full flex flex-col items-center justify-center space-y-4 rounded-none max-w-4xl mx-auto px-4">
                         <h2 className="text-xl md:text-2xl font-black text-slate-800">اختر نوع المحفظة</h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full rounded-none">
-                          <button onClick={() => { setSelectedPortfolioCollector(null); setCustomerTabSubView('table'); }} className="bg-slate-900 text-white p-8 md:p-12 rounded-2xl border border-white/5 shadow-xl hover:bg-slate-800 transition-all text-center">
+                          <button onClick={() => { setSelectedPortfolioCollector(null); setCustomerTabSubView('table'); }} className="bg-slate-900 text-white p-8 md:p-12 rounded-none border border-white/5 shadow-xl hover:bg-slate-800 transition-all text-center">
                             <h3 className="text-xl md:text-2xl font-black">المحفظة الشاملة</h3>
                             <p className="text-slate-400 text-xs mt-2 uppercase">Central Ledger Access</p>
                           </button>
-                          <div className="bg-white p-8 md:p-12 rounded-2xl border border-slate-200 shadow-xl text-center">
+                          <div className="bg-white p-8 md:p-12 rounded-none border border-slate-200 shadow-xl text-center">
                             <h3 className="text-xl md:text-2xl font-black text-slate-800">محفظة محصل محدد</h3>
-                            <select onChange={(e) => { if (e.target.value) { setSelectedPortfolioCollector(e.target.value); setCustomerTabSubView('table'); }}} className="w-full mt-6 bg-slate-50 border border-slate-200 rounded-xl py-4 px-6 text-xs font-black outline-none focus:ring-2 focus:ring-teal-500">
+                            <select onChange={(e) => { if (e.target.value) { setSelectedPortfolioCollector(e.target.value); setCustomerTabSubView('table'); }}} className="w-full mt-6 bg-slate-50 border border-slate-200 rounded-none py-4 px-6 text-xs font-black outline-none focus:ring-2 focus:ring-teal-500">
                               <option value="">اختر اسم المحصل...</option>
                               {collectorsList.map(name => <option key={name} value={name}>{name}</option>)}
                             </select>
@@ -310,7 +291,7 @@ const App: React.FC = () => {
                       <div className="h-full flex flex-col rounded-none shadow-xl border border-slate-200">
                         <div className="flex items-center gap-4 p-4 border-b border-slate-200 bg-white">
                           {activeTab === 'customers' && (
-                            <button onClick={() => setCustomerTabSubView('selection')} className="px-3 py-1.5 bg-slate-100 border border-slate-200 rounded-lg text-[10px] font-black hover:bg-slate-200 transition-colors">🔙 رجوع</button>
+                            <button onClick={() => setCustomerTabSubView('selection')} className="px-3 py-1.5 bg-slate-100 border border-slate-200 rounded-none text-[10px] font-black hover:bg-slate-200 transition-colors">🔙 رجوع</button>
                           )}
                           <h4 className="font-black text-sm text-slate-800 uppercase">Portfolio Manager</h4>
                         </div>
@@ -342,12 +323,12 @@ const App: React.FC = () => {
       {currentUser && (
         <button 
           onClick={() => setIsAIPanelOpen(true)}
-          className="fixed bottom-6 left-6 z-[100] w-14 h-14 bg-teal-600 text-white rounded-full shadow-2xl flex items-center justify-center text-2xl hover:bg-teal-500 hover:scale-110 transition-all group"
+          className="fixed bottom-6 left-6 z-[100] w-14 h-14 bg-teal-600 text-white rounded-none shadow-2xl flex items-center justify-center text-2xl hover:bg-teal-500 hover:scale-110 transition-all group"
           title="تفعيل المساعد الصوتي الذكي"
         >
-          <div className="absolute inset-0 rounded-full bg-teal-600 animate-ping opacity-20"></div>
+          <div className="absolute inset-0 rounded-none bg-teal-600 animate-ping opacity-20"></div>
           <span className="relative z-10 group-hover:animate-pulse">🎤</span>
-          <div className="absolute -top-2 -right-2 bg-rose-500 text-white text-[8px] font-black px-1.5 py-0.5 rounded-full shadow-sm animate-bounce">AI</div>
+          <div className="absolute -top-2 -right-2 bg-rose-500 text-white text-[8px] font-black px-1.5 py-0.5 rounded-none shadow-sm animate-bounce">AI</div>
         </button>
       )}
 

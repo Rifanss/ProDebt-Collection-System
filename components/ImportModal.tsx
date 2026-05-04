@@ -126,7 +126,7 @@ const ImportModal: React.FC<ImportModalProps> = ({ isOpen, onClose, onImport }) 
 
   return (
     <div className="fixed inset-0 z-[500] flex items-center justify-center bg-slate-900/80 backdrop-blur-sm p-4">
-      <div className="bg-white w-full max-w-md rounded-2xl shadow-2xl overflow-hidden border border-white/20">
+      <div className="bg-white w-full max-w-md rounded-none shadow-2xl overflow-hidden border border-white/20">
         <div className="bg-brand-primary p-6 text-white text-center">
           <h2 className="text-xl font-bold uppercase tracking-tight">استيراد المحفظة</h2>
           <p className="text-[10px] opacity-60 mt-1 uppercase tracking-widest font-black">Official Matrix Import Engine</p>
@@ -134,23 +134,23 @@ const ImportModal: React.FC<ImportModalProps> = ({ isOpen, onClose, onImport }) 
         <div className="p-8 space-y-4">
           {isProcessing ? (
             <div className="text-center py-8">
-              <div className="w-10 h-10 border-4 border-teal-50 border-t-teal-500 animate-spin mx-auto mb-4 rounded-full"></div>
+              <div className="w-10 h-10 border-4 border-teal-50 border-t-teal-500 animate-spin mx-auto mb-4 rounded-none"></div>
               <p className="text-xs font-bold text-slate-500">جاري مطابقة الـ 29 عموداً المعتمدة...</p>
             </div>
           ) : previewData ? (
             <div className="text-center space-y-6">
-              <div className="bg-slate-50 p-8 rounded-2xl border border-slate-100 flex flex-col items-center">
+              <div className="bg-slate-50 p-8 rounded-none border border-slate-100 flex flex-col items-center">
                 <p className="text-4xl font-black text-brand-primary">{previewData.count.toLocaleString()}</p>
                 <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-2">سجل تم التعرف عليه بنجاح</p>
               </div>
               <div className="space-y-3">
-                <button onClick={() => { onImport(tempCustomersRef.current); onClose(); }} className="w-full py-5 bg-teal-600 text-white rounded-xl font-black text-xs uppercase tracking-widest hover:bg-teal-700 transition-all shadow-xl">تأكيد استيراد البيانات</button>
-                <button onClick={() => { setPreviewData(null); tempCustomersRef.current = []; }} className="w-full py-3 bg-slate-100 text-slate-600 rounded-xl font-black text-[10px] uppercase tracking-widest hover:bg-slate-200 transition-all">إلغاء واختيار ملف آخر</button>
+                <button onClick={() => { onImport(tempCustomersRef.current); onClose(); }} className="w-full py-5 bg-teal-600 text-white rounded-none font-black text-xs uppercase tracking-widest hover:bg-teal-700 transition-all shadow-xl">تأكيد استيراد البيانات</button>
+                <button onClick={() => { setPreviewData(null); tempCustomersRef.current = []; }} className="w-full py-3 bg-slate-100 text-slate-600 rounded-none font-black text-[10px] uppercase tracking-widest hover:bg-slate-200 transition-all">إلغاء واختيار ملف آخر</button>
               </div>
             </div>
           ) : (
             <>
-              <div className="border-2 border-dashed border-slate-200 p-10 text-center rounded-2xl hover:border-brand-primary transition-all cursor-pointer group" onClick={() => fileInputRef.current?.click()}>
+              <div className="border-2 border-dashed border-slate-200 p-10 text-center rounded-none hover:border-brand-primary transition-all cursor-pointer group" onClick={() => fileInputRef.current?.click()}>
                 <input type="file" ref={fileInputRef} className="hidden" accept=".csv" onChange={(e) => {
                   const file = e.target.files?.[0];
                   if (file) {
@@ -166,7 +166,7 @@ const ImportModal: React.FC<ImportModalProps> = ({ isOpen, onClose, onImport }) 
               
               <button 
                 onClick={onClose}
-                className="w-full py-4 bg-slate-100 text-slate-500 border border-slate-200 rounded-xl hover:bg-slate-200 transition-all font-black text-[10px] uppercase tracking-widest flex items-center justify-center gap-2"
+                className="w-full py-4 bg-slate-100 text-slate-500 border border-slate-200 rounded-none hover:bg-slate-200 transition-all font-black text-[10px] uppercase tracking-widest flex items-center justify-center gap-2"
               >
                 <span>🏠</span>
                 <span>الرجوع للصفحة الرئيسية</span>
